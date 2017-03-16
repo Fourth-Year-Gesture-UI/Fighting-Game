@@ -5,13 +5,26 @@ using System;
 
 public class KinectManager : MonoBehaviour {
 
-    // public Text GestureTextGameObject;
+    // Unused Code 
+    // ===========
+
+    // GUI output
+    //private UnityEngine.Color[] bodyColors;
+    //private string[] bodyText;
+    //public Text GestureTextGameObject;
     //public Text ConfidenceTextGameObject;
     //public GameObject Player;
     //private Turning turnScript;
+    //
+
+    //NEW UI FOR GESTURE DETECTed
+    //GestureTextGameObject.text = "Gesture Detected: " + isDetected;
+    //StringBuilder text = new StringBuilder(string.Format("Gesture Detected? {0}\n", isDetected));
+    // ConfidenceTextGameObject.text = "Confidence: " + e.DetectionConfidence;
+    //text.Append(string.Format("Confidence: {0}\n", e.DetectionConfidence));
 
     // Kinect 
-    private KinectSensor _Sensor;
+    public KinectSensor _Sensor;
 
     // color frame and data 
     private ColorFrameReader colorFrameReader;
@@ -22,27 +35,21 @@ public class KinectManager : MonoBehaviour {
     private int bodyCount;
     private Body[] bodies;
 
-    //private string leanLeftGestureName = "Lean_Left";
-    //private string leanRightGestureName = "Lean_Right";
     private string straightPunch = "Right_Straight_Punch_Right";
-
-    // GUI output
-    //private UnityEngine.Color[] bodyColors;
-    //private string[] bodyText;
 
     /// <summary> List of gesture detectors, there will be one detector created for each potential body (max of 6) </summary>
     private List<GestureDetector> gestureDetectorList = null;
 
-    Animator animator;
-
     private float rightPunch;
-
     private int count;
 
     // Used to assign trackind id's so that two players can be differentiated while in game
     private ulong player_1;
     private ulong player_2;
 
+    Player_1 p1;
+    Player_2 p2;
+    
     // Use this for initialization
     void Start()
     {
@@ -55,17 +62,13 @@ public class KinectManager : MonoBehaviour {
         {
 
             bodyFrameReader = this._Sensor.BodyFrameSource.OpenReader();
-
             this.bodyCount = this._Sensor.BodyFrameSource.BodyCount;
-
             this.bodies = new Body[this.bodyCount];
-
             this.gestureDetectorList = new List<GestureDetector>();
 
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
                 this.gestureDetectorList.Add(new GestureDetector(this._Sensor));
-               
             }
 
             // Open the sensor
@@ -73,8 +76,9 @@ public class KinectManager : MonoBehaviour {
 
             Debug.Log("Kinect is open");
 
-            animator = GetComponent<Animator>();
-            
+            p1 = GameObject.FindGameObjectWithTag("Player-1").GetComponent<Player_1>();
+            p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
+
         }// End if
 
      }// End Start
@@ -82,7 +86,6 @@ public class KinectManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //rightPunch = animator.GetFloat("Punch");
 
         // process bodies
         bool newBodyData = false;
@@ -99,39 +102,41 @@ public class KinectManager : MonoBehaviour {
         if (newBodyData)
         {
 
+            int index = 0;
+
             // update gesture detectors with the correct tracking id
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
+
                 var body = this.bodies[bodyIndex];
 
+                // If there is somebody in camera view
                 if (body != null)
                 {
                     var trackingId = body.TrackingId;
 
                     // Code for Initialisation
+                    // =======================
 
                     // Give player 1 a tracking id
                     if (player_1 == 0)
                     {
                         player_1 = trackingId;
 
-                        //Debug.Log(player_1);
+                        index = bodyIndex;
+
+                        Debug.Log("Player 1 tracking id " + player_1);
                     }
                     
                     // Give player 2 a tracking id
-                    if (player_1 != 0 && player_2 == 0)
+                    if (player_2 == 0 && bodyIndex != index)
                     {
                         player_2 = trackingId;
+
+                        Debug.Log("Player 2 tracking id " + player_2);
                     }
-                    // End Initialisation
-
-                    /*if (player_1 > 0)
-                    {
-                        player_1 = checkTrackingId(trackingId, player_1);
-
-                        //Debug.Log("CHANGE TRACKING ID " + player_1);
-                    }*/
-                   
+                    // ========================
+                    
                     // if the current body TrackingId changed, update the corresponding gesture detector with the new value
                     if (trackingId != this.gestureDetectorList[bodyIndex].TrackingId)
                     {
@@ -140,6 +145,7 @@ public class KinectManager : MonoBehaviour {
                         this.gestureDetectorList[bodyIndex].TrackingId = trackingId;
 
                         player_1 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_1);
+                        player_2 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_2);
 
                         // if the current body is tracked, unpause its detector to get VisualGestureBuilderFrameArrived events
                         // if the current body is not tracked, pause its detector so we don't waste resources trying to get invalid gesture results
@@ -164,36 +170,25 @@ public class KinectManager : MonoBehaviour {
         
         var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
 
-        //Debug.Log(e.GestureID);
-
         if (e.GestureID == straightPunch)
         {
 
-            //NEW UI FOR GESTURE DETECTed
-            //GestureTextGameObject.text = "Gesture Detected: " + isDetected;
-            //StringBuilder text = new StringBuilder(string.Format("Gesture Detected? {0}\n", isDetected));
-           // ConfidenceTextGameObject.text = "Confidence: " + e.DetectionConfidence;
-            //text.Append(string.Format("Confidence: {0}\n", e.DetectionConfidence));
-            if (e.DetectionConfidence > 0.7)
+            if (e.DetectionConfidence > 0.5)
             {
                 
                 ulong player1 = player_1;
                 ulong player2 = player_2;
-
-                //Debug.Log("Punch " + " Confidence " + e.DetectionConfidence + "    Counter " + count);
-                count = 0;
-
-                /*for (int i =0; i < 6; i++)
-                {
-                    Debug.Log("Bodies tracking id " + this.bodies[i].TrackingId + "  " + i);
-                }*/
                
-                if (player1 == player_1 && e.IsGestureDetected)//  this.bodies[0].TrackingId
+                if (player1 == player_1)
                 {
-                    animator.Play("Straight_Right_Punch");
+                    p1.straight_right_punch();
                 }
 
-                //Debug.Log("TrackingID " + player1);
+                if (player2 == player_2)
+                {
+                    p2.straight_right_punch();
+                }
+
             }
             else
             {
@@ -282,11 +277,38 @@ public class KinectManager : MonoBehaviour {
 
             player_1 = currentTrackingId;
 
-            Debug.Log("New tracking id =====> " + player_1);
+            //Debug.Log("New tracking id =====> " + player_1);
 
             return player_1;
         }
 
+    }
+
+    private ulong checkTrackingIdPlayer2(ulong currentTrackingId, ulong playerId)
+    {
+
+        if (currentTrackingId == playerId)
+        {
+
+            player_2 = playerId;
+
+            return player_2;
+        }
+        else
+        {
+
+            player_2 = currentTrackingId;
+
+            //Debug.Log("New tracking id =====> " + player_2);
+
+            return player_2;
+        }
+
+    }
+
+    public KinectSensor getSensor()
+    {
+        return this._Sensor;
     }
 
     // bodies = new Body[this.kinectSensor.BodyFrameSource.BodyCount];

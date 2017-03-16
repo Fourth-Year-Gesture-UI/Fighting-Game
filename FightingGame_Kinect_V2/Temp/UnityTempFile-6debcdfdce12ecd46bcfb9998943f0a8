@@ -81,6 +81,8 @@
 -define:ENABLE_VSTU
 Assets/Scripts/GestureDetector.cs
 Assets/Scripts/KinectManager.cs
+Assets/Scripts/Player_1.cs
+Assets/Scripts/Player_2.cs
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Runtime.Serialization.dll"
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Xml.Linq.dll"
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\UnityScript.dll"
