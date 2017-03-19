@@ -23,6 +23,15 @@ public class Player_1 : MonoBehaviour {
 
     }
 
+    // Detect collision with Red Guy
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name == "RedGuy")
+        {
+            Debug.Log("Hit red guy");
+        }
+    }
+
     public void straight_right_punch()
     {
         animator.Play("Straight_Right_Punch");
