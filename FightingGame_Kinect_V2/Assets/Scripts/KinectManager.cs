@@ -34,7 +34,7 @@ public class KinectManager : MonoBehaviour {
     private BodyFrameReader bodyFrameReader;
     private int bodyCount;
     private Body[] bodies;
-
+    private List<Body> trackedBodies;
     private string straightPunch = "Right_Straight_Punch_Right";
 
     /// <summary> List of gesture detectors, there will be one detector created for each potential body (max of 6) </summary>
@@ -47,8 +47,16 @@ public class KinectManager : MonoBehaviour {
     private ulong player_1;
     private ulong player_2;
 
+    private bool isPlayer1;
+    private bool isPlayer2;
+
+    private int bi;
+   
+    // Player scripts
     Player_1 p1;
     Player_2 p2;
+
+
     
     // Use this for initialization
     void Start()
@@ -64,7 +72,9 @@ public class KinectManager : MonoBehaviour {
             bodyFrameReader = this._Sensor.BodyFrameSource.OpenReader();
             this.bodyCount = this._Sensor.BodyFrameSource.BodyCount;
             this.bodies = new Body[this.bodyCount];
+            this.trackedBodies = new List<Body> { };
             this.gestureDetectorList = new List<GestureDetector>();
+            this.bi = 0;
 
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
@@ -81,6 +91,9 @@ public class KinectManager : MonoBehaviour {
 
         }// End if
 
+        isPlayer1 = false;
+        isPlayer2 = false;
+
      }// End Start
 
     // Update is called once per frame
@@ -90,53 +103,91 @@ public class KinectManager : MonoBehaviour {
         // process bodies
         bool newBodyData = false;
 
+        // Get the latest frame
         using (BodyFrame bodyFrame = this.bodyFrameReader.AcquireLatestFrame())
         {
+
             if (bodyFrame != null)
             {
                 bodyFrame.GetAndRefreshBodyData(this.bodies);
-                newBodyData = true;
-            }
-        }
 
+                newBodyData = true;
+
+            }// End if
+
+        }// End using
+
+        // If the frame is not null new a new body is found
         if (newBodyData)
         {
-
-            int index = 0;
 
             // update gesture detectors with the correct tracking id
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
 
+                // Store body from array
                 var body = this.bodies[bodyIndex];
 
                 // If there is somebody in camera view
                 if (body != null)
                 {
-                    var trackingId = body.TrackingId;
 
+                    ulong trackingId = 0;
+
+                    if (bodies[bodyIndex].IsTracked)
+                    {
+                        // Adding bodies to the list
+                        if (trackedBodies.Count < 2)
+                        {
+                            if(trackedBodies.Count == 0)
+                            {
+                                trackedBodies.Add(body);
+                            }
+                            if(trackedBodies.Count == 1)
+                            {
+                                if(trackedBodies[0].TrackingId != bodies[bodyIndex].TrackingId)
+                                {
+                                    trackedBodies.Add(body);
+                                }
+                            }
+                        }
+
+                        foreach (Body b in trackedBodies)
+                        {
+                            Debug.Log("body tracked id" + b.TrackingId);
+                        }
+
+                        // Assign tracking id 
+                        trackingId = body.TrackingId;
+
+                        int index = bodyIndex;
+                    }
+                   
                     // Code for Initialisation
                     // =======================
 
+                    /*
                     // Give player 1 a tracking id
                     if (player_1 == 0)
                     {
                         player_1 = trackingId;
 
-                        index = bodyIndex;
-
                         Debug.Log("Player 1 tracking id " + player_1);
                     }
-                    
+                    */
                     // Give player 2 a tracking id
-                    if (player_2 == 0 && bodyIndex != index)
+                    /*if (isPlayer1 == false && isPlayer2 == false)//player_2 == 0 && bodyIndex != index)
                     {
                         player_2 = trackingId;
 
-                        Debug.Log("Player 2 tracking id " + player_2);
-                    }
+                        isPlayer2 = true;
+
+                        //Debug.Log("Player 2 tracking id " + player_2);
+                    }*/
                     // ========================
-                    
+
+                    this.gestureDetectorList[bodyIndex].OnGestureDetected += CreateOnGestureHandler(trackedBodies, trackingId);
+
                     // if the current body TrackingId changed, update the corresponding gesture detector with the new value
                     if (trackingId != this.gestureDetectorList[bodyIndex].TrackingId)
                     {
@@ -144,14 +195,14 @@ public class KinectManager : MonoBehaviour {
                         //this.bodyText[bodyIndex] = "none";
                         this.gestureDetectorList[bodyIndex].TrackingId = trackingId;
 
-                        player_1 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_1);
-                        player_2 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_2);
+                       // player_1 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_1);
+                        //player_2 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_2);
 
                         // if the current body is tracked, unpause its detector to get VisualGestureBuilderFrameArrived events
                         // if the current body is not tracked, pause its detector so we don't waste resources trying to get invalid gesture results
                         this.gestureDetectorList[bodyIndex].IsPaused = (trackingId == 0);
                        
-                        this.gestureDetectorList[bodyIndex].OnGestureDetected += CreateOnGestureHandler(bodyIndex, trackingId);
+                        this.gestureDetectorList[bodyIndex].OnGestureDetected += CreateOnGestureHandler(trackedBodies, trackingId);
                        
                     }
                 }
@@ -160,12 +211,12 @@ public class KinectManager : MonoBehaviour {
 
     }// End Update
 
-    private EventHandler<GestureEventArgs> CreateOnGestureHandler(int bodyIndex, ulong trackingId)
+    private EventHandler<GestureEventArgs> CreateOnGestureHandler(List<Body> players, ulong trackingId)
     {
-        return (object sender, GestureEventArgs e) => OnGestureDetected(sender, e, bodyIndex, trackingId);
+        return (object sender, GestureEventArgs e) => OnGestureDetected(sender, e, players, trackingId);
     }
 
-    private void OnGestureDetected(object sender, GestureEventArgs e, int bodyIndex, ulong trackingId)
+    private void OnGestureDetected(object sender, GestureEventArgs e, List<Body> players, ulong trackingId)
     {
         
         var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
@@ -175,19 +226,34 @@ public class KinectManager : MonoBehaviour {
 
             if (e.DetectionConfidence > 0.5)
             {
-                
-                ulong player1 = player_1;
-                ulong player2 = player_2;
-               
-                if (player1 == player_1)
+
+                for(int i = 0; i < players.Count; i++)
+                {
+                    Body b = players[i];
+                    if(b.TrackingId == trackingId)
+                    {
+                        if(i == 0)
+                        {
+                            p1.straight_right_punch();
+                        }
+                        else
+                        {
+                            p2.straight_right_punch();
+                        }
+                    }
+                }
+
+                /*
+                if (trackingId !=0)
                 {
                     p1.straight_right_punch();
                 }
 
-                if (player2 == player_2)
+                if (trackingId == 2)
                 {
                     p2.straight_right_punch();
                 }
+                */
 
             }
             else
@@ -262,7 +328,7 @@ public class KinectManager : MonoBehaviour {
         }
     }
 
-    private ulong checkTrackingId(ulong currentTrackingId, ulong playerId)
+   /* private ulong checkTrackingId(ulong currentTrackingId, ulong playerId)
     {
 
         if (currentTrackingId == playerId)
@@ -304,7 +370,7 @@ public class KinectManager : MonoBehaviour {
             return player_2;
         }
 
-    }
+    }*/
 
     public KinectSensor getSensor()
     {
