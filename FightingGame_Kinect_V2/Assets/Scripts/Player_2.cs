@@ -32,4 +32,14 @@ public class Player_2 : MonoBehaviour {
     {
         animator.Play("Straight_Right_Punch");
     }
+
+    public void straight_left_punch()
+    {
+
+    }
+
+    public void block()
+    {
+
+    }
 }

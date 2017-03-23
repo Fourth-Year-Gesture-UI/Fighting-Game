@@ -41,6 +41,8 @@ public class GestureDetector : IDisposable
 {
     /// <summary> Path to the gesture database that was trained with VGB </summary>
     private readonly string straight_punchDB = "GestureDB\\Kinect_Gesture_Straight_Punch.gbd";
+    private readonly string left_punchDB = "GestureDB\\Left_Punch";
+    private readonly string blockDB = "GestureDB\\Block.gbd";
 
 
     /// <summary> Name of the discrete gesture in the database that we want to track </summary>
@@ -51,6 +53,8 @@ public class GestureDetector : IDisposable
     // *****        Need to have same name as in gesture database          ******
     // ==========================================================================
     private readonly string straightPunch = "Right_Straight_Punch_Right";
+    private readonly string left_punch = "Left_Punch_Left";
+    private readonly string block = "Block";
 
     /// <summary> Gesture frame source which should be tied to a body tracking ID </summary>
     private VisualGestureBuilderFrameSource vgbFrameSource = null;
@@ -112,10 +116,16 @@ public class GestureDetector : IDisposable
                 {
                     this.vgbFrameSource.AddGesture(gesture);
                 }
-               /* if (gesture.Name.Equals(this.leanRightGestureName))
+
+                if (gesture.Name.Equals(this.left_punch))
                 {
                     this.vgbFrameSource.AddGesture(gesture);
-                }*/
+                }
+
+                if (gesture.Name.Equals(this.block))
+                {
+                    this.vgbFrameSource.AddGesture(gesture);
+                }
             }
         }
     }
@@ -214,6 +224,7 @@ public class GestureDetector : IDisposable
                     foreach (Gesture gesture in this.vgbFrameSource.Gestures)
                     {
 
+                        // Right Punch Gesture
                         if (gesture.Name.Equals(this.straightPunch) && gesture.GestureType == GestureType.Discrete)
                         {
                             DiscreteGestureResult result = null;
@@ -228,7 +239,8 @@ public class GestureDetector : IDisposable
                             }
                         }
 
-                       /* if (gesture.Name.Equals(this.leanRightGestureName) && gesture.GestureType == GestureType.Discrete)
+                        // Left Punch Gesture
+                        if (gesture.Name.Equals(this.left_punch) && gesture.GestureType == GestureType.Discrete)
                         {
                             DiscreteGestureResult result = null;
                             discreteResults.TryGetValue(gesture, out result);
@@ -237,10 +249,25 @@ public class GestureDetector : IDisposable
                             {
                                 if (this.OnGestureDetected != null)
                                 {
-                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.leanRightGestureName));
+                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.left_punch));
                                 }
                             }
-                        }*/
+                        }
+
+                        // Block Gesture
+                        if (gesture.Name.Equals(this.block) && gesture.GestureType == GestureType.Discrete)
+                        {
+                            DiscreteGestureResult result = null;
+                            discreteResults.TryGetValue(gesture, out result);
+
+                            if (result != null)
+                            {
+                                if (this.OnGestureDetected != null)
+                                {
+                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.block));
+                                }
+                            }
+                        }
                     }
                 }
             }
