@@ -134,19 +134,25 @@ public class KinectManager : MonoBehaviour {
 
                     ulong trackingId = 0;
 
+                    // if player is detected
                     if (bodies[bodyIndex].IsTracked)
                     {
                         // Adding bodies to the list
-                        if (trackedBodies.Count < 2)
+                        if (trackedBodies.Count < 2) // if list is empty
                         {
+                            // if no players in the list:
                             if(trackedBodies.Count == 0)
                             {
+                                // then add player 1
                                 trackedBodies.Add(body);
                             }
+                            // if there player 1 in the list:
                             if(trackedBodies.Count == 1)
                             {
+                                // make sure that it is not player 1
                                 if(trackedBodies[0].TrackingId != bodies[bodyIndex].TrackingId)
                                 {
+                                    // and add player 2 to the list
                                     trackedBodies.Add(body);
                                 }
                             }
