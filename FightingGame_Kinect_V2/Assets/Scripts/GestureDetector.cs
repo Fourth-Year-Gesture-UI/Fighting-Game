@@ -41,8 +41,10 @@ public class GestureDetector : IDisposable
 {
     /// <summary> Path to the gesture database that was trained with VGB </summary>
     private readonly string straight_punchDB = "GestureDB\\Kinect_Gesture_Straight_Punch.gbd";
-    private readonly string left_punchDB = "GestureDB\\Left_Punch";
+    private readonly string left_punchDB = "GestureDB\\Left_Punch.gbd";
     private readonly string blockDB = "GestureDB\\Block.gbd";
+    private readonly string left_kickDB = "GestureDB\\Left_Kick.gbd";
+    private readonly string right_kickDB = "GestureDB\\Right_Kick.gbd";
 
 
     /// <summary> Name of the discrete gesture in the database that we want to track </summary>
@@ -55,6 +57,8 @@ public class GestureDetector : IDisposable
     private readonly string straightPunch = "Right_Straight_Punch_Right";
     private readonly string left_punch = "Left_Punch_Left";
     private readonly string block = "Block";
+    private readonly string left_kick = "Left_Kick_Left";
+    private readonly string right_kick = "Right_Kick_Right";
 
     /// <summary> Gesture frame source which should be tied to a body tracking ID </summary>
     private VisualGestureBuilderFrameSource vgbFrameSource = null;
@@ -105,6 +109,10 @@ public class GestureDetector : IDisposable
 
         // load the 'Seated' gesture from the gesture database
         var databasePath = Path.Combine(Application.streamingAssetsPath, this.straight_punchDB);
+        var databasePathLeftPunch = Path.Combine(Application.streamingAssetsPath, this.left_punchDB);
+        var databasePathBlock = Path.Combine(Application.streamingAssetsPath, this.blockDB);
+        var databasePathLeftKick = Path.Combine(Application.streamingAssetsPath, this.left_kickDB);
+        var databasePathRightKick = Path.Combine(Application.streamingAssetsPath, this.right_kickDB);
 
         using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePath))
         {
@@ -116,18 +124,65 @@ public class GestureDetector : IDisposable
                 {
                     this.vgbFrameSource.AddGesture(gesture);
                 }
+            }
+        }
 
-                if (gesture.Name.Equals(this.left_punch))
-                {
-                    this.vgbFrameSource.AddGesture(gesture);
-                }
-
+        using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePathBlock))
+        {
+            // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
+            // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
+            foreach (Gesture gesture in database.AvailableGestures)
+            {
+               
                 if (gesture.Name.Equals(this.block))
                 {
                     this.vgbFrameSource.AddGesture(gesture);
                 }
             }
         }
+
+        using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePathLeftPunch))
+        {
+            // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
+            // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
+            foreach (Gesture gesture in database.AvailableGestures)
+            {
+
+                if (gesture.Name.Equals(this.left_punch))
+                {
+                    this.vgbFrameSource.AddGesture(gesture);
+                }
+            }
+        }
+
+        using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePathLeftKick))
+        {
+            // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
+            // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
+            foreach (Gesture gesture in database.AvailableGestures)
+            {
+
+                if (gesture.Name.Equals(this.left_kick))
+                {
+                    this.vgbFrameSource.AddGesture(gesture);
+                }
+            }
+        }
+
+        using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePathRightKick))
+        {
+            // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
+            // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
+            foreach (Gesture gesture in database.AvailableGestures)
+            {
+
+                if (gesture.Name.Equals(this.right_kick))
+                {
+                    this.vgbFrameSource.AddGesture(gesture);
+                }
+            }
+        }
+
     }
 
     /// <summary>
@@ -265,6 +320,36 @@ public class GestureDetector : IDisposable
                                 if (this.OnGestureDetected != null)
                                 {
                                     this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.block));
+                                }
+                            }
+                        }
+
+                        // Right Kick Gesture
+                        if (gesture.Name.Equals(this.right_kick) && gesture.GestureType == GestureType.Discrete)
+                        {
+                            DiscreteGestureResult result = null;
+                            discreteResults.TryGetValue(gesture, out result);
+
+                            if (result != null)
+                            {
+                                if (this.OnGestureDetected != null)
+                                {
+                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.right_kick));
+                                }
+                            }
+                        }
+
+                        // Left Kick Gesture
+                        if (gesture.Name.Equals(this.left_kick) && gesture.GestureType == GestureType.Discrete)
+                        {
+                            DiscreteGestureResult result = null;
+                            discreteResults.TryGetValue(gesture, out result);
+
+                            if (result != null)
+                            {
+                                if (this.OnGestureDetected != null)
+                                {
+                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.left_kick));
                                 }
                             }
                         }

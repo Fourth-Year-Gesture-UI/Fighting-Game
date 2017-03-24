@@ -36,6 +36,10 @@ public class KinectManager : MonoBehaviour {
     private Body[] bodies;
     private List<Body> trackedBodies;
     private string straightPunch = "Right_Straight_Punch_Right";
+    private string left_punch = "Left_Punch_Left";
+    private string block = "Block";
+    private string left_kick = "Left_Kick_Left";
+    private string right_kick = "Right_Kick_Right";
 
     /// <summary> List of gesture detectors, there will be one detector created for each potential body (max of 6) </summary>
     private List<GestureDetector> gestureDetectorList = null;
@@ -56,8 +60,6 @@ public class KinectManager : MonoBehaviour {
     Player_1 p1;
     Player_2 p2;
 
-
-    
     // Use this for initialization
     void Start()
     {
@@ -160,7 +162,7 @@ public class KinectManager : MonoBehaviour {
 
                         foreach (Body b in trackedBodies)
                         {
-                            Debug.Log("body tracked id" + b.TrackingId);
+                            //Debug.Log("body tracked id" + b.TrackingId);
                         }
 
                         // Assign tracking id 
@@ -168,29 +170,6 @@ public class KinectManager : MonoBehaviour {
 
                         int index = bodyIndex;
                     }
-                   
-                    // Code for Initialisation
-                    // =======================
-
-                    /*
-                    // Give player 1 a tracking id
-                    if (player_1 == 0)
-                    {
-                        player_1 = trackingId;
-
-                        Debug.Log("Player 1 tracking id " + player_1);
-                    }
-                    */
-                    // Give player 2 a tracking id
-                    /*if (isPlayer1 == false && isPlayer2 == false)//player_2 == 0 && bodyIndex != index)
-                    {
-                        player_2 = trackingId;
-
-                        isPlayer2 = true;
-
-                        //Debug.Log("Player 2 tracking id " + player_2);
-                    }*/
-                    // ========================
 
                     this.gestureDetectorList[bodyIndex].OnGestureDetected += CreateOnGestureHandler(trackedBodies, trackingId);
 
@@ -233,60 +212,151 @@ public class KinectManager : MonoBehaviour {
             if (e.DetectionConfidence > 0.5)
             {
 
-                for(int i = 0; i < players.Count; i++)
+                for (int i = 0; i < players.Count; i++)
                 {
                     Body b = players[i];
-                    if(b.TrackingId == trackingId)
+                    if (b.TrackingId == trackingId)
                     {
-                        if(i == 0)
+                        if (i == 0)
                         {
                             p1.straight_right_punch();
                         }
                         else
                         {
                             p2.straight_right_punch();
-                        }
-                    }
-                }
+                        }// End if /else
 
-                /*
-                if (trackingId !=0)
-                {
-                    p1.straight_right_punch();
-                }
+                    }// End if
 
-                if (trackingId == 2)
-                {
-                    p2.straight_right_punch();
-                }
-                */
+                }// End for
 
-            }
-            else
-            {
-                //turnScript.turnLeft = false;
-            }
-        }
+            }// End if
 
-        /*if (e.GestureID == leanRightGestureName)
+        }// End outer if
+
+       // Debug.Log(e.GestureID);
+
+        // Left Punch Gesture
+        if (e.GestureID == left_punch)
         {
-            //NEW UI FOR GESTURE DETECTed
-            //GestureTextGameObject.text = "Gesture Detected: " + isDetected;
-            //StringBuilder text = new StringBuilder(string.Format("Gesture Detected? {0}\n", isDetected));
-            //ConfidenceTextGameObject.text = "Confidence: " + e.DetectionConfidence;
-            //text.Append(string.Format("Confidence: {0}\n", e.DetectionConfidence));
-            if (e.DetectionConfidence > 0.65f)
-            {
-               // turnScript.turnRight = true;
-            }
-            else
-            {
-               // turnScript.turnRight = false;
-            }
-        }*/
 
-        //this.bodyText[bodyIndex] = text.ToString();
-    }
+            if (e.DetectionConfidence > 0.5)
+            {
+
+                for (int i = 0; i < players.Count; i++)
+                {
+
+                    Body b = players[i];
+                    if (b.TrackingId == trackingId)
+                    {
+                        if (i == 0)
+                        {
+                            p1.straight_left_punch();
+                        }
+                        else
+                        {
+                            p2.straight_left_punch();
+                        }// End if / else
+
+                    }//End if
+
+                }// End for
+
+            }// End if
+
+        }// End outer if
+
+        // Block Gesture
+        if (e.GestureID == block)
+        {
+
+            if (e.DetectionConfidence > 0.2)
+            {
+
+                for (int i = 0; i < players.Count; i++)
+                {
+
+                    Body b = players[i];
+                    if (b.TrackingId == trackingId)
+                    {
+                        if (i == 0)
+                        {
+                            p1.block();
+                        }
+                        else
+                        {
+                            p2.block();
+                        }// End if / else
+
+                    }//End if
+
+                }// End for
+
+            }// End if
+
+        }// End outer if
+
+        // Left Kick Gesture
+        if (e.GestureID == left_kick)
+        {
+
+            if (e.DetectionConfidence > 0.65)
+            {
+
+                for (int i = 0; i < players.Count; i++)
+                {
+
+                    Body b = players[i];
+                    if (b.TrackingId == trackingId)
+                    {
+                        if (i == 0)
+                        {
+                            p1.left_kick();
+                        }
+                        else
+                        {
+                            p2.left_kick();
+                        }// End if / else
+
+                    }//End if
+
+                }// End for
+
+            }// End if
+
+        }// End outer if
+
+        // Right Kick Gesture
+        if (e.GestureID == right_kick)
+        {
+
+            if (e.DetectionConfidence > 0.60)
+            {
+
+                for (int i = 0; i < players.Count; i++)
+                {
+
+                    Body b = players[i];
+                    if (b.TrackingId == trackingId)
+                    {
+                        if (i == 0)
+                        {
+                            p1.right_kick();
+                        }
+                        else
+                        {
+                            p2.right_kick();
+                        }// End if / else
+
+                    }//End if
+
+                }// End for
+
+            }// End if
+
+        }// End outer if
+
+    }// End OnGestureDetected
 
     private void OnRightLeanGestureDetected(object sender, GestureEventArgs e, int bodyIndex)
     {
@@ -332,51 +402,10 @@ public class KinectManager : MonoBehaviour {
 
             _Sensor = null;
         }
-    }
 
-   /* private ulong checkTrackingId(ulong currentTrackingId, ulong playerId)
-    {
+    }// End OnApplicationQuit
 
-        if (currentTrackingId == playerId)
-        {
 
-            player_1 = playerId;
-
-            return player_1;
-        }
-        else
-        {
-
-            player_1 = currentTrackingId;
-
-            //Debug.Log("New tracking id =====> " + player_1);
-
-            return player_1;
-        }
-
-    }
-
-    private ulong checkTrackingIdPlayer2(ulong currentTrackingId, ulong playerId)
-    {
-
-        if (currentTrackingId == playerId)
-        {
-
-            player_2 = playerId;
-
-            return player_2;
-        }
-        else
-        {
-
-            player_2 = currentTrackingId;
-
-            //Debug.Log("New tracking id =====> " + player_2);
-
-            return player_2;
-        }
-
-    }*/
 
     public KinectSensor getSensor()
     {

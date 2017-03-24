@@ -35,11 +35,21 @@ public class Player_2 : MonoBehaviour {
 
     public void straight_left_punch()
     {
-
+        animator.Play("Straight_Left_Punch");
     }
 
     public void block()
     {
+        animator.Play("Block");
+    }
 
+    public void left_kick()
+    {
+        animator.Play("Left_Kick");
+    }
+
+    public void right_kick()
+    {
+        animator.Play("Right_Kick");
     }
 }
