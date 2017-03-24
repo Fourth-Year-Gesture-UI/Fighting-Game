@@ -8,8 +8,8 @@ class ScrollBarEssentials
     protected Vector2 pivotVector = Vector2.zero;
     protected bool MouseInRect = false;    
 
-    protected int current_value = 0;
-    protected int max_value = 0;
+    protected int current_value = 100;
+    protected int max_value = 100;
 
     protected Rect ScrollBarDimens = new Rect();
     protected Rect ScrollBarTextureDimens;
@@ -48,6 +48,8 @@ class ScrollBarEssentials
         style.fontStyle = FontStyle.Bold;
         style.normal.textColor = Color.white;
     }
+
+    public ScrollBarEssentials() { }
 
     protected virtual int DetermineMaxVal(int value)
     {

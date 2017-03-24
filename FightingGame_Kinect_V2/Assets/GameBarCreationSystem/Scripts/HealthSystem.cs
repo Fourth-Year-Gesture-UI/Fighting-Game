@@ -12,11 +12,14 @@ class HealthSystem : ScrollBarEssentials
 
     }
 
+    public HealthSystem() {}
+
     public void Initialize()
     {
-        max_value = DetermineMaxVal(200);
+        max_value = DetermineMaxVal(100);
     }
 
+    // Update the health bar
     public void Update()
     {
         if (current_value < 0)

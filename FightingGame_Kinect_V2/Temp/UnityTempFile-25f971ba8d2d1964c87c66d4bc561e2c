@@ -87,6 +87,7 @@ Assets/GameBarCreationSystem/Scripts/HealthSystem.cs
 Assets/GameBarCreationSystem/Scripts/ManaSystem.cs
 Assets/GameBarCreationSystem/Scripts/ScrollBarEssentials.cs
 Assets/Scripts/GestureDetector.cs
+Assets/Scripts/HealthManager.cs
 Assets/Scripts/KinectManager.cs
 Assets/Scripts/Player_1.cs
 Assets/Scripts/Player_2.cs

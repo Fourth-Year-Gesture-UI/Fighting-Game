@@ -59,6 +59,7 @@ public class KinectManager : MonoBehaviour {
     // Player scripts
     Player_1 p1;
     Player_2 p2;
+    HealthManager hm;
 
     // Use this for initialization
     void Start()
@@ -90,6 +91,8 @@ public class KinectManager : MonoBehaviour {
 
             p1 = GameObject.FindGameObjectWithTag("Player-1").GetComponent<Player_1>();
             p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
+
+            hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
 
         }// End if
 
@@ -206,6 +209,7 @@ public class KinectManager : MonoBehaviour {
         
         var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
 
+        // Right Punch
         if (e.GestureID == straightPunch)
         {
 
@@ -220,10 +224,14 @@ public class KinectManager : MonoBehaviour {
                         if (i == 0)
                         {
                             p1.straight_right_punch();
+                            hm.isBlueAttacking = true;
+                            hm.damage = hm.rightPunch;
                         }
                         else
                         {
                             p2.straight_right_punch();
+                            hm.isRedAttacking = true;
+                            hm.damage = hm.rightPunch;
                         }// End if /else
 
                     }// End if
@@ -252,10 +260,14 @@ public class KinectManager : MonoBehaviour {
                         if (i == 0)
                         {
                             p1.straight_left_punch();
+                            hm.isBlueAttacking = true;
+                            hm.damage = hm.leftPunch;
                         }
                         else
                         {
                             p2.straight_left_punch();
+                            hm.isRedAttacking = true;
+                            hm.damage = hm.leftPunch;
                         }// End if / else
 
                     }//End if
