@@ -324,10 +324,14 @@ public class KinectManager : MonoBehaviour {
                         if (i == 0)
                         {
                             p1.left_kick();
+                            hm.isBlueAttacking = true;
+                            hm.damage = hm.leftKick;
                         }
                         else
                         {
                             p2.left_kick();
+                            hm.isRedAttacking = true;
+                            hm.damage = hm.leftKick;
                         }// End if / else
 
                     }//End if
@@ -354,10 +358,14 @@ public class KinectManager : MonoBehaviour {
                         if (i == 0)
                         {
                             p1.right_kick();
+                            hm.isBlueAttacking = true;
+                            hm.damage = hm.rightKick;
                         }
                         else
                         {
                             p2.right_kick();
+                            hm.isRedAttacking = true;
+                            hm.damage = hm.rightKick;
                         }// End if / else
 
                     }//End if

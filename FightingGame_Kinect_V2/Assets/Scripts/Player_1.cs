@@ -6,19 +6,20 @@ using Windows.Kinect;
 
 public class Player_1 : MonoBehaviour {
 
+    // Script / Component variables
     Animator animator;
     Player_2 p2;
-
     HealthManager hm;
-
     HealthSystem health_bar;
 
+    // Health bar variables
     public Rect HealthBarDimens;
     public bool VerticleHealthBar;
     public Texture HealthBubbleTexture;
     public Texture HealthTexture;
     public float HealthBubbleTextureRotation;
 
+    // Hit timer variables
     float _hitTime = 1;
     float _hitTimer = 0;
     bool canHit = true;
@@ -26,6 +27,7 @@ public class Player_1 : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+
         animator = GetComponent<Animator>();
 
         p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
@@ -33,13 +35,17 @@ public class Player_1 : MonoBehaviour {
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
 
         health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
-    }
+
+    }// End Start
+
     // Update is called once per frame
     void Update()
     {
+
+        // Add to timer
         _hitTimer += Time.deltaTime;
 
-
+        // Conditions that control whether player can hit or not
         if (_hitTimer > _hitTime)
         {
             canHit = true;
@@ -47,7 +53,10 @@ public class Player_1 : MonoBehaviour {
         else {
             canHit = false;
         }
-    }
+
+    }// End update
+
+    // Draw the health bar to the screen
     public void OnGUI()
     {
         health_bar.DrawBar();
@@ -56,7 +65,8 @@ public class Player_1 : MonoBehaviour {
     // Detect collision with Red Guy
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name == "RedGuy" && hm.isBlueAttacking == true )
+
+        if (col.gameObject.name == "RedGuy" && hm.isBlueAttacking == true)
         {
 
             if (canHit == true)
@@ -75,13 +85,17 @@ public class Player_1 : MonoBehaviour {
                 // Reset is attacking value
                 hm.isBlueAttacking = false;
 
+                // Reset timer
                 _hitTimer = 0;
             }
-               
-        }
 
-    }
+        }// End outer if
 
+    }// End OnCollisionEnter
+
+    // ==============================
+    //      Fighting Animations
+    // ==============================
     public void straight_right_punch()
     {
         animator.Play("Straight_Right_Punch");
@@ -107,4 +121,4 @@ public class Player_1 : MonoBehaviour {
         animator.Play("Right_Kick");
     }
 
-}
+}// End class Player_1

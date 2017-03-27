@@ -5,20 +5,20 @@ using Windows.Kinect;
 
 public class Player_2 : MonoBehaviour {
 
+    // Script / Component variables
     Animator animator;
-
     HealthManager hm;
-
     HealthSystem health_bar;
-
     Player_1 p1;
 
+    // Health bar variables
     public Rect HealthBarDimens;
     public bool VerticleHealthBar;
     public Texture HealthBubbleTexture;
     public Texture HealthTexture;
     public float HealthBubbleTextureRotation;
 
+    // Hit timer variables
     float _hitTime = 1;
     float _hitTimer = 0;
     bool canHit = true;
@@ -26,6 +26,7 @@ public class Player_2 : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+
         animator = GetComponent<Animator>();
 
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
@@ -34,14 +35,16 @@ public class Player_2 : MonoBehaviour {
 
         p1 = GameObject.FindGameObjectWithTag("Player-1").GetComponent<Player_1>();
 
-    }
+    }// End Start
 
     // Update is called once per frame
     void Update()
     {
+
+        // Add to timer
         _hitTimer += Time.deltaTime;
 
-
+        // Conditions that control whether player can hit or not
         if (_hitTimer > _hitTime)
         {
             canHit = true;
@@ -50,8 +53,10 @@ public class Player_2 : MonoBehaviour {
         {
             canHit = false;
         }
-    }
 
+    }// End Update
+
+    // Draw the health bar to the screen
     public void OnGUI()
     {
         health_bar.DrawBar();
@@ -63,6 +68,7 @@ public class Player_2 : MonoBehaviour {
 
         if (canHit == true)
         {
+
             if (col.gameObject.name == "BlueGuy" && hm.isRedAttacking == true)
             {
 
@@ -77,12 +83,18 @@ public class Player_2 : MonoBehaviour {
 
                 hm.isRedAttacking = false;
 
+                // Reset timer
                 _hitTimer = 0;
             }
-        }
+
+        }// End outer if
            
     }// End OnCollisionEnter
 
+
+    // ==============================
+    //      Fighting Animations
+    // ==============================
     public void straight_right_punch()
     {
         animator.Play("Straight_Right_Punch");
@@ -107,4 +119,5 @@ public class Player_2 : MonoBehaviour {
     {
         animator.Play("Right_Kick");
     }
-}
+
+}// End class Player_2
