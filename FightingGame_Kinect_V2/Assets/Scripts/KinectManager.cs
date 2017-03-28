@@ -87,7 +87,10 @@ public class KinectManager : MonoBehaviour {
             // Open the sensor
             this._Sensor.Open();
 
-            Debug.Log("Kinect is open");
+            if (this._Sensor.IsOpen)
+            {
+                Debug.Log("Kinect is open");
+            }
 
             p1 = GameObject.FindGameObjectWithTag("Player-1").GetComponent<Player_1>();
             p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
@@ -111,6 +114,8 @@ public class KinectManager : MonoBehaviour {
         // Get the latest frame
         using (BodyFrame bodyFrame = this.bodyFrameReader.AcquireLatestFrame())
         {
+
+            Debug.Log("Getting frame " + bodyFrame);
 
             if (bodyFrame != null)
             {
