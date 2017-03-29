@@ -218,7 +218,7 @@ public class KinectManager : MonoBehaviour {
         if (e.GestureID == straightPunch)
         {
 
-            if (e.DetectionConfidence > 0.5)
+            if (e.DetectionConfidence > 0.4)
             {
 
                 for (int i = 0; i < players.Count; i++)
@@ -253,7 +253,7 @@ public class KinectManager : MonoBehaviour {
         if (e.GestureID == left_punch)
         {
 
-            if (e.DetectionConfidence > 0.5)
+            if (e.DetectionConfidence > 0.4)
             {
 
                 for (int i = 0; i < players.Count; i++)
@@ -317,7 +317,7 @@ public class KinectManager : MonoBehaviour {
         if (e.GestureID == left_kick)
         {
 
-            if (e.DetectionConfidence > 0.65)
+            if (e.DetectionConfidence > 0.3)
             {
 
                 for (int i = 0; i < players.Count; i++)
@@ -351,7 +351,7 @@ public class KinectManager : MonoBehaviour {
         if (e.GestureID == right_kick)
         {
 
-            if (e.DetectionConfidence > 0.60)
+            if (e.DetectionConfidence > 0.3)
             {
 
                 for (int i = 0; i < players.Count; i++)
