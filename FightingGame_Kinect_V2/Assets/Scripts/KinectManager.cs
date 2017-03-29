@@ -132,7 +132,7 @@ public class KinectManager : MonoBehaviour {
         if (newBodyData)
         {
 
-            trackedBodies = 0;
+            bodiesTracked = 0;
             // update gesture detectors with the correct tracking id
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
@@ -149,10 +149,10 @@ public class KinectManager : MonoBehaviour {
                     // if player is detected
                     if (bodies[bodyIndex].IsTracked)
                     {
-                        trackedBodies++;
+                        bodiesTracked++;
 
                         // Adding bodies to the list
-                        if (trackedBodies.Count < 2) // if list is empty
+                        if (trackedBodies.Count < 2) // if list is not populated
                         {
                             // if no players in the list:
                             if(trackedBodies.Count == 0)
@@ -168,10 +168,20 @@ public class KinectManager : MonoBehaviour {
                                 // make sure that it is not player 1
                                 if(trackedBodies[0].TrackingId != bodies[bodyIndex].TrackingId)
                                 {
-                                    // Create second Player object
-                                    Player p = new Player(2, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
-                                    // and add player 2 to the list
-                                    trackedBodies.Add(p);
+                                    if(trackedBodies[0].playerNumber == 1)
+                                    {
+                                        // Create second Player object
+                                        // and add player 2 to the list
+                                        Player p = new Player(2, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
+                                        trackedBodies.Add(p);
+                                    }
+                                    else
+                                    {
+                                        // Create second Player object
+                                        // and add player 2 to the list
+                                        Player p = new Player(1, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
+                                        trackedBodies.Insert(0, p);
+                                    }
                                 }
                             }
                         }
