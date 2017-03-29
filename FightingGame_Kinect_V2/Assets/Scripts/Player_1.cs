@@ -50,14 +50,12 @@ public class Player_1 : MonoBehaviour {
 
         health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
 
-       
-
     }// End Start
 
     // Update is called once per frame
     void Update()
     {
-
+      
         // Add to timer
         _hitTimer += Time.deltaTime;
 

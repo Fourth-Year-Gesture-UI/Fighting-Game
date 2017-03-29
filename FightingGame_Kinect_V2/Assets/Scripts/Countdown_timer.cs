@@ -14,6 +14,6 @@ public class Countdown_timer : MonoBehaviour {
 
         timeLeft -= Time.deltaTime;
         text.text =  Mathf.Round(timeLeft).ToString();
-       
+
     }
 }
