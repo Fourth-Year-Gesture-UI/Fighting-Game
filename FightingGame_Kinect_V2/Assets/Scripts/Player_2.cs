@@ -15,6 +15,11 @@ public class Player_2 : MonoBehaviour {
     HealthSystem health_bar;
     Player_1 p1;
 
+    // Sound variables
+    private UnityEngine.AudioSource source;
+    public AudioClip hitSound;
+    public AudioClip anotherSound;
+
     // Health bar variables
     public Rect HealthBarDimens;
     public bool VerticleHealthBar;
@@ -26,6 +31,11 @@ public class Player_2 : MonoBehaviour {
     float _hitTime = 1;
     float _hitTimer = 0;
     bool canHit = true;
+
+    private void Awake()
+    {
+        source = GetComponent<UnityEngine.AudioSource>();
+    }
 
     // Initialization
     void Start()
@@ -52,6 +62,7 @@ public class Player_2 : MonoBehaviour {
         if (_hitTimer > _hitTime)
         {
             canHit = true;
+
         }
         else
         {
@@ -87,6 +98,10 @@ public class Player_2 : MonoBehaviour {
 
                 // Play animation that shows player being knocked back after gettng hit
                 p1.takenHit();
+
+                // Play hit sound
+                source.PlayOneShot(hitSound, 1);
+                //source.PlayOneShot(anotherSound, 1); Slap Sound Effect
 
                 // Deplete health bar 
                 health_bar.IncrimentBar(hm.damage);

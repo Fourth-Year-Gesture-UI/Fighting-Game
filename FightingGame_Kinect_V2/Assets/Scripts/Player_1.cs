@@ -16,6 +16,11 @@ public class Player_1 : MonoBehaviour {
     HealthManager hm;
     HealthSystem health_bar;
 
+    // Sound variables
+    private UnityEngine.AudioSource source;
+    public AudioClip hitSound;
+    public AudioClip anotherSound;
+
     // Health bar variables
     public Rect HealthBarDimens;
     public bool VerticleHealthBar;
@@ -28,6 +33,11 @@ public class Player_1 : MonoBehaviour {
     float _hitTimer = 0;
     bool canHit = true;
 
+    private void Awake()
+    {
+        source = GetComponent<UnityEngine.AudioSource>();
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +49,8 @@ public class Player_1 : MonoBehaviour {
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
 
         health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
+
+       
 
     }// End Start
 
@@ -90,6 +102,10 @@ public class Player_1 : MonoBehaviour {
 
                     // Play animation that shows player being knocked back after gettng hit
                     p2.takenHit();
+
+                    // Play hit sound
+                    source.PlayOneShot(hitSound, 1);
+                    //source.PlayOneShot(anotherSound, 1); Slap Sound Effect
 
                     // Deplete health bar 
                     health_bar.IncrimentBar(hm.damage);

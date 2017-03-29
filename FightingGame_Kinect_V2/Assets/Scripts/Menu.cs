@@ -13,6 +13,15 @@ public class Menu : MonoBehaviour {
     private Body[] bodies;
     private List<Body> trackedBodies;
 
+    // Sound Variables
+    private UnityEngine.AudioSource source;
+    public AudioClip menuBeep;
+
+    private void Awake()
+    {
+        source = GetComponent<UnityEngine.AudioSource>();
+    }
+
     // Use this for initialization
     void Start () {
 
@@ -30,14 +39,8 @@ public class Menu : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-
-        if (this._Sensor.IsOpen)
-        {
-
-            //Debug.Log("Connect is open");
-
-        }
+	void Update ()
+    {
 
         // process bodies
         bool newBodyData = false;
@@ -71,14 +74,8 @@ public class Menu : MonoBehaviour {
                             if (body.HandRightState == HandState.Open)
                             {
 
-                               // _Sensor.Close();
-
-                                /*if (!this._Sensor.IsOpen)
-                                {
-
-                                    Debug.Log("Gfnjfdjskfi");
-
-                                }*/
+                                // Play sound to show hand gesture worked
+                                source.PlayOneShot(menuBeep, 1f);
 
                                 SceneManager.LoadScene("Main");
 
