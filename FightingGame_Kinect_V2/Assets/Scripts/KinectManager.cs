@@ -33,8 +33,9 @@ public class KinectManager : MonoBehaviour {
 
     private BodyFrameReader bodyFrameReader;
     private int bodyCount;
+    private int bodiesTracked;
     private Body[] bodies;
-    private List<Body> trackedBodies;
+    private List<Player> trackedBodies;
     private string straightPunch = "Right_Straight_Punch_Right";
     private string left_punch = "Left_Punch_Left";
     private string block = "Block";
@@ -75,7 +76,7 @@ public class KinectManager : MonoBehaviour {
             bodyFrameReader = this._Sensor.BodyFrameSource.OpenReader();
             this.bodyCount = this._Sensor.BodyFrameSource.BodyCount;
             this.bodies = new Body[this.bodyCount];
-            this.trackedBodies = new List<Body> { };
+            this.trackedBodies = new List<Player> { };
             this.gestureDetectorList = new List<GestureDetector>();
             this.bi = 0;
 
@@ -131,6 +132,7 @@ public class KinectManager : MonoBehaviour {
         if (newBodyData)
         {
 
+            trackedBodies = 0;
             // update gesture detectors with the correct tracking id
             for (int bodyIndex = 0; bodyIndex < this.bodyCount; bodyIndex++)
             {
@@ -147,14 +149,18 @@ public class KinectManager : MonoBehaviour {
                     // if player is detected
                     if (bodies[bodyIndex].IsTracked)
                     {
+                        trackedBodies++;
+
                         // Adding bodies to the list
                         if (trackedBodies.Count < 2) // if list is empty
                         {
                             // if no players in the list:
                             if(trackedBodies.Count == 0)
                             {
+                                // Create first Player object
+                                Player p = new Player(1, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
                                 // then add player 1
-                                trackedBodies.Add(body);
+                                trackedBodies.Add(p);
                             }
                             // if there player 1 in the list:
                             if(trackedBodies.Count == 1)
@@ -162,15 +168,12 @@ public class KinectManager : MonoBehaviour {
                                 // make sure that it is not player 1
                                 if(trackedBodies[0].TrackingId != bodies[bodyIndex].TrackingId)
                                 {
+                                    // Create second Player object
+                                    Player p = new Player(2, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
                                     // and add player 2 to the list
-                                    trackedBodies.Add(body);
+                                    trackedBodies.Add(p);
                                 }
                             }
-                        }
-
-                        foreach (Body b in trackedBodies)
-                        {
-                            //Debug.Log("body tracked id" + b.TrackingId);
                         }
 
                         // Assign tracking id 
@@ -199,17 +202,34 @@ public class KinectManager : MonoBehaviour {
                        
                     }
                 }
+
+                // remove player if step out
+                if(bodyIndex == this.bodyCount - 1)
+                {
+                    if(bodiesTracked == 1 && trackedBodies.Count == 2)
+                    {
+                        foreach(Player p in trackedBodies)
+                        {
+                            if(p.trackingId != trackingId)
+                            {
+                                trackedBodies.Remove(p);
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
 
     }// End Update
 
-    private EventHandler<GestureEventArgs> CreateOnGestureHandler(List<Body> players, ulong trackingId)
+    private EventHandler<GestureEventArgs> CreateOnGestureHandler(List<Player> players, ulong trackingId)
     {
         return (object sender, GestureEventArgs e) => OnGestureDetected(sender, e, players, trackingId);
     }
 
-    private void OnGestureDetected(object sender, GestureEventArgs e, List<Body> players, ulong trackingId)
+    private void OnGestureDetected(object sender, GestureEventArgs e, List<Player> players, ulong trackingId)
     {
         
         var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
@@ -223,21 +243,18 @@ public class KinectManager : MonoBehaviour {
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    Body b = players[i];
-                    if (b.TrackingId == trackingId)
+                    if (players[0].trackingId == trackingId)
                     {
-                        if (i == 0)
-                        {
-                            p1.straight_right_punch();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.rightPunch;
-                        }
-                        else
-                        {
-                            p2.straight_right_punch();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.rightPunch;
-                        }// End if /else
+                        
+                        p1.straight_right_punch();
+                        hm.isBlueAttacking = true;
+                        hm.damage = hm.rightPunch;
+                    }
+                    else
+                    {
+                        p2.straight_right_punch();
+                        hm.isRedAttacking = true;
+                        hm.damage = hm.rightPunch;
 
                     }// End if
 
@@ -258,24 +275,20 @@ public class KinectManager : MonoBehaviour {
 
                 for (int i = 0; i < players.Count; i++)
                 {
-
-                    Body b = players[i];
-                    if (b.TrackingId == trackingId)
+                    if (players[0].trackingId == trackingId)
                     {
-                        if (i == 0)
-                        {
-                            p1.straight_left_punch();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.leftPunch;
-                        }
-                        else
-                        {
-                            p2.straight_left_punch();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.leftPunch;
-                        }// End if / else
+                        
+                        p1.straight_left_punch();
+                        hm.isBlueAttacking = true;
+                        hm.damage = hm.leftPunch;
+                    }
+                    else
+                    {
+                        p2.straight_left_punch();
+                        hm.isRedAttacking = true;
+                        hm.damage = hm.leftPunch;
 
-                    }//End if
+                    } // end if
 
                 }// End for
 
@@ -292,20 +305,17 @@ public class KinectManager : MonoBehaviour {
 
                 for (int i = 0; i < players.Count; i++)
                 {
-
-                    Body b = players[i];
-                    if (b.TrackingId == trackingId)
+                    if (players[0].trackingId == trackingId)
                     {
-                        if (i == 0)
-                        {
-                            p1.block();
-                        }
-                        else
-                        {
-                            p2.block();
-                        }// End if / else
+                        
+                        p1.block();
+                    }
+                    else
+                    {
+                        p2.block();
 
-                    }//End if
+                    } // end if
+
 
                 }// End for
 
@@ -323,23 +333,20 @@ public class KinectManager : MonoBehaviour {
                 for (int i = 0; i < players.Count; i++)
                 {
 
-                    Body b = players[i];
-                    if (b.TrackingId == trackingId)
+                    if (players[0].trackingId == trackingId)
                     {
-                        if (i == 0)
-                        {
-                            p1.left_kick();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.leftKick;
-                        }
-                        else
-                        {
-                            p2.left_kick();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.leftKick;
-                        }// End if / else
+                        
+                        p1.left_kick();
+                        hm.isBlueAttacking = true;
+                        hm.damage = hm.leftKick;
+                    }
+                    else
+                    {
+                        p2.left_kick();
+                        hm.isRedAttacking = true;
+                        hm.damage = hm.leftKick;
 
-                    }//End if
+                    } // end if
 
                 }// End for
 
@@ -357,23 +364,20 @@ public class KinectManager : MonoBehaviour {
                 for (int i = 0; i < players.Count; i++)
                 {
 
-                    Body b = players[i];
-                    if (b.TrackingId == trackingId)
+                    if (players[0].trackingId == trackingId)
                     {
-                        if (i == 0)
-                        {
-                            p1.right_kick();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.rightKick;
-                        }
-                        else
-                        {
-                            p2.right_kick();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.rightKick;
-                        }// End if / else
+                        
+                        p1.right_kick();
+                        hm.isBlueAttacking = true;
+                        hm.damage = hm.rightKick;
+                    }
+                    else
+                    {
+                        p2.right_kick();
+                        hm.isRedAttacking = true;
+                        hm.damage = hm.rightKick;
 
-                    }//End if
+                    } // end if
 
                 }// End for
 
@@ -435,6 +439,11 @@ public class KinectManager : MonoBehaviour {
     public KinectSensor getSensor()
     {
         return this._Sensor;
+    }
+
+    private void removePlayer()
+    {
+
     }
 
     // bodies = new Body[this.kinectSensor.BodyFrameSource.BodyCount];
