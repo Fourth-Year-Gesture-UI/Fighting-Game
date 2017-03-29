@@ -88,7 +88,8 @@ public class Player_1 : MonoBehaviour {
                     // Keeping track of blue guy health
                     hm.blueHealth -= hm.damage;
 
-                    Debug.Log(hm.damage);
+                    // Play animation that shows player being knocked back after gettng hit
+                    p2.takenHit();
 
                     // Deplete health bar 
                     health_bar.IncrimentBar(hm.damage);
@@ -103,9 +104,8 @@ public class Player_1 : MonoBehaviour {
 
                 if (hm.isRedBlocking == true)
                 {
-
+                    // Start coroutine that delays isRedBlocking variable
                     StartCoroutine(BlockCoroutine());
-
                 }
 
                 // Reset timer
@@ -142,6 +142,11 @@ public class Player_1 : MonoBehaviour {
     public void right_kick()
     {
         animator.Play("Right_Kick");
+    }
+
+    public void takenHit()
+    {
+        animator.Play("TakenHit");
     }
 
     IEnumerator BlockCoroutine()

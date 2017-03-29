@@ -61,7 +61,13 @@ public class KinectManager : MonoBehaviour {
     Player_2 p2;
     HealthManager hm;
 
-    // Use this for initialization
+    // Might be better for initalising the kinect sensor
+    private void Awake()
+    {
+        
+    }
+
+    // Initialization
     void Start()
     {
 
@@ -298,7 +304,6 @@ public class KinectManager : MonoBehaviour {
                         {
                             p1.block();
                             hm.isBlueBlocking = true;
-                           // Debug.Log("isBlocking " + hm.isBlueBlocking);
                         }
                         else
                         {

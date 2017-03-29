@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Windows.Kinect;
 
+//  ======================================================================================
+//                                  Player 1 is Red Guy
+//  ======================================================================================
+
 public class Player_2 : MonoBehaviour {
 
     // Script / Component variables
@@ -23,7 +27,7 @@ public class Player_2 : MonoBehaviour {
     float _hitTimer = 0;
     bool canHit = true;
 
-    // Use this for initialization
+    // Initialization
     void Start()
     {
 
@@ -81,6 +85,9 @@ public class Player_2 : MonoBehaviour {
                 // Keeping track of red guy health
                 hm.redHealth -= hm.damage;
 
+                // Play animation that shows player being knocked back after gettng hit
+                p1.takenHit();
+
                 // Deplete health bar 
                 health_bar.IncrimentBar(hm.damage);
 
@@ -96,9 +103,8 @@ public class Player_2 : MonoBehaviour {
 
             if (hm.isBlueBlocking == true)
             {
-
+                // Start coroutine that delays isBlueBlocking variable
                 StartCoroutine(BlockCoroutine());
-
             }
 
         }// End outer if
@@ -131,6 +137,11 @@ public class Player_2 : MonoBehaviour {
     public void right_kick()
     {
         animator.Play("Right_Kick");
+    }
+
+    public void takenHit()
+    {
+        animator.Play("TakenHit");
     }
 
     IEnumerator BlockCoroutine()
