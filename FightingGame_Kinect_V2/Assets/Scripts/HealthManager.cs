@@ -18,6 +18,9 @@ public class HealthManager : MonoBehaviour {
     public bool isBlueAttacking { get; set; }
     public bool isRedAttacking { get; set; }
 
+    public bool isBlueBlocking { get; set; }
+    public bool isRedBlocking { get; set; }
+
     // Use this for initialization
     void Start () {
 
@@ -33,6 +36,8 @@ public class HealthManager : MonoBehaviour {
 
         isBlueAttacking = false;
         isRedAttacking = false;
+
+        isBlueBlocking = false;
 
     }// End Start
 	

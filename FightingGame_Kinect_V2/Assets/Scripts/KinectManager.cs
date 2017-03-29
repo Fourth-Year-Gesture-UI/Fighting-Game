@@ -115,8 +115,6 @@ public class KinectManager : MonoBehaviour {
         using (BodyFrame bodyFrame = this.bodyFrameReader.AcquireLatestFrame())
         {
 
-            Debug.Log("Getting frame " + bodyFrame);
-
             if (bodyFrame != null)
             {
                 bodyFrame.GetAndRefreshBodyData(this.bodies);
@@ -299,10 +297,13 @@ public class KinectManager : MonoBehaviour {
                         if (i == 0)
                         {
                             p1.block();
+                            hm.isBlueBlocking = true;
+                           // Debug.Log("isBlocking " + hm.isBlueBlocking);
                         }
                         else
                         {
                             p2.block();
+                            hm.isRedBlocking = true;
                         }// End if / else
 
                     }//End if

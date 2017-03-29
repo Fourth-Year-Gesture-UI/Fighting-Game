@@ -66,11 +66,17 @@ public class Player_2 : MonoBehaviour {
     void OnCollisionEnter(Collision col)
     {
 
-        if (canHit == true)
+        if (col.gameObject.name == "BlueGuy" && hm.isRedAttacking == true)
         {
 
-            if (col.gameObject.name == "BlueGuy" && hm.isRedAttacking == true)
+            if (canHit == true)
             {
+
+                /* ================================================================================================================
+                                                                NOTE
+                    Health bars were switched on screen so when blue guy hits he's actually taking health off himself
+                    but on screen the health bars are placed over other player to give impresssion the other player is losing health
+                    ================================================================================================================ */
 
                 // Keeping track of red guy health
                 hm.redHealth -= hm.damage;
@@ -85,12 +91,19 @@ public class Player_2 : MonoBehaviour {
 
                 // Reset timer
                 _hitTimer = 0;
+
+            }
+
+            if (hm.isBlueBlocking == true)
+            {
+
+                StartCoroutine(BlockCoroutine());
+
             }
 
         }// End outer if
            
     }// End OnCollisionEnter
-
 
     // ==============================
     //      Fighting Animations
@@ -120,4 +133,9 @@ public class Player_2 : MonoBehaviour {
         animator.Play("Right_Kick");
     }
 
+    IEnumerator BlockCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        hm.isBlueBlocking = false;
+    }
 }// End class Player_2

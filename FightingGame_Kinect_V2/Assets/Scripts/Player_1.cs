@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Windows.Kinect;
 
+//  ======================================================================================
+//                                  Player 1 is Blue Guy
+//  ======================================================================================
+
 public class Player_1 : MonoBehaviour {
 
     // Script / Component variables
@@ -71,19 +75,38 @@ public class Player_1 : MonoBehaviour {
 
             if (canHit == true)
             {
-                // Keeping track of red guy health
-                hm.blueHealth -= hm.damage;
 
-                Debug.Log(hm.damage);
+                /* ================================================================================================================
+                                                                     NOTE
+                   Health bars were switched on screen so when blue guy hits he's actually taking health off himself
+                   but on screen the health bars are placed over other player to give impresssion the other player is losing health
+                   ================================================================================================================ */
 
-                // Deplete health bar 
-                health_bar.IncrimentBar(hm.damage);
+                if (hm.isBlueBlocking == false)
+                {
 
-                // Update the health bar
-                health_bar.Update();
+                    // Keeping track of blue guy health
+                    hm.blueHealth -= hm.damage;
 
-                // Reset is attacking value
-                hm.isBlueAttacking = false;
+                    Debug.Log(hm.damage);
+
+                    // Deplete health bar 
+                    health_bar.IncrimentBar(hm.damage);
+
+                    // Update the health bar
+                    health_bar.Update();
+
+                    // Reset is attacking value
+                    hm.isBlueAttacking = false;
+
+                }
+
+                if (hm.isRedBlocking == true)
+                {
+
+                    StartCoroutine(BlockCoroutine());
+
+                }
 
                 // Reset timer
                 _hitTimer = 0;
@@ -121,4 +144,9 @@ public class Player_1 : MonoBehaviour {
         animator.Play("Right_Kick");
     }
 
+    IEnumerator BlockCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        hm.isRedBlocking = false;
+    }
 }// End class Player_1
