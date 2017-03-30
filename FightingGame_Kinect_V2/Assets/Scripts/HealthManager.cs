@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    private const int maxHealth = 20;
+    private const int maxHealth = 30;
 
     // Variables for health and attack damage
     public int blueHealth { get; set; }
@@ -25,6 +25,8 @@ public class HealthManager : MonoBehaviour {
 
     public bool hasRedLost { get; set; }
     public bool hasBlueLost { get; set; }
+
+    private KinectManager km;
 
     // Use this for initialization
     void Start () {
@@ -48,6 +50,8 @@ public class HealthManager : MonoBehaviour {
         hasRedLost = false;
         hasBlueLost = false;
 
+        km = GameObject.FindGameObjectWithTag("Kinect").GetComponent<KinectManager>();
+
     }// End Start
 	
 	// Update is called once per frame
@@ -58,6 +62,7 @@ public class HealthManager : MonoBehaviour {
         if (blueHealth >= maxHealth)
         {
             hasRedLost = true;
+            km.isGameOver = true;
         }
 
         // If Red Health goes above a certain value blue loses
@@ -65,6 +70,7 @@ public class HealthManager : MonoBehaviour {
         if (redHealth >= maxHealth)
         {
             hasBlueLost = true;
+            km.isGameOver = true;
         }
 
     }// End Update

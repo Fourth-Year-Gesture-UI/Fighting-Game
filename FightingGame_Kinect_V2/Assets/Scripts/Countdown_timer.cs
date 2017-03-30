@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Countdown_timer : MonoBehaviour {
 
-    float timeLeft = 90.0f;
+    float timeLeft = 10.0f;
     float startTime = 5.0f;
 
     public Text countdownTimerText;
@@ -14,12 +14,14 @@ public class Countdown_timer : MonoBehaviour {
     private Player_1 p1;
     private Player_2 p2;
     private HealthManager hm;
+    private KinectManager km;
 
     void Start()
     {
         p1 = GameObject.FindGameObjectWithTag("Player-1").GetComponent<Player_1>();
         p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
+        km = GameObject.FindGameObjectWithTag("Kinect").GetComponent<KinectManager>();
     }
 
     void Update()
@@ -39,14 +41,13 @@ public class Countdown_timer : MonoBehaviour {
 
                 startTime -= Time.deltaTime;
             }
-            else {
-
+            else
+            {
                 startTime -= Time.deltaTime;
                 startTimerText.text = Mathf.Round(startTime).ToString();
 
                 p1.enabled = false;
                 p2.enabled = false;
-
             }
         }
         else
@@ -56,6 +57,15 @@ public class Countdown_timer : MonoBehaviour {
             countdownTimerText.text = Mathf.Round(timeLeft).ToString();
             p1.enabled = true;
             p2.enabled = true;
+        }
+
+        if (Mathf.Round(timeLeft) <= 0)
+        {
+            startTimerText.text = "Draw";
+            countdownTimerText.text = "";
+            p1.enabled = false;
+            p2.enabled = false;
+            km.isGameOver = true;
         }
 
     }// End Update
