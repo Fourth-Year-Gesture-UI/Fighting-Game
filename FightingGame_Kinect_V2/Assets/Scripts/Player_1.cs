@@ -43,11 +43,8 @@ public class Player_1 : MonoBehaviour {
     {
 
         animator = GetComponent<Animator>();
-
         p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
-
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
-
         health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
 
     }// End Start
@@ -66,6 +63,11 @@ public class Player_1 : MonoBehaviour {
         }
         else {
             canHit = false;
+        }
+
+        if (hm.hasBlueLost)
+        {
+            StartCoroutine(DoAnimation());
         }
 
     }// End update
@@ -103,7 +105,7 @@ public class Player_1 : MonoBehaviour {
 
                     // Play hit sound
                     source.PlayOneShot(hitSound, 1);
-                    //source.PlayOneShot(anotherSound, 1); Slap Sound Effect
+                    //source.PlayOneShot(anotherSound, 1); //Slap Sound Effect
 
                     // Deplete health bar 
                     health_bar.IncrimentBar(hm.damage);
@@ -167,5 +169,12 @@ public class Player_1 : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f);
         hm.isRedBlocking = false;
+    }
+
+    IEnumerator DoAnimation()
+    {
+        animator.Play("Lose");
+        yield return new WaitForSeconds(0.925f); 
+        animator.enabled = false;
     }
 }// End class Player_1

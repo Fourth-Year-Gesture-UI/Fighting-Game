@@ -61,12 +61,6 @@ public class KinectManager : MonoBehaviour {
     Player_2 p2;
     HealthManager hm;
 
-    // Might be better for initalising the kinect sensor
-    private void Awake()
-    {
-        
-    }
-
     // Initialization
     void Start()
     {
@@ -291,7 +285,7 @@ public class KinectManager : MonoBehaviour {
         if (e.GestureID == block)
         {
 
-            if (e.DetectionConfidence > 0.2)
+            if (e.DetectionConfidence > 0.7)
             {
 
                 for (int i = 0; i < players.Count; i++)
