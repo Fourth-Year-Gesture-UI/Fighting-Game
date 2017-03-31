@@ -20,10 +20,6 @@ public class Menu : MonoBehaviour {
     private void Awake()
     {
         source = GetComponent<UnityEngine.AudioSource>();
-    }
-
-    // Use this for initialization
-    void Start () {
 
         // Get the sensor
         this._Sensor = KinectSensor.GetDefault();
@@ -35,7 +31,11 @@ public class Menu : MonoBehaviour {
 
         // Open the sensor
         this._Sensor.Open();
+    }
 
+    // Use this for initialization
+    void Start () {
+        
     }
 	
 	// Update is called once per frame
@@ -77,6 +77,7 @@ public class Menu : MonoBehaviour {
                                 // Play sound to show hand gesture worked
                                 source.PlayOneShot(menuBeep, 1f);
 
+                                OnApplicationQuit();
                                 SceneManager.LoadScene("Main");
 
                             }

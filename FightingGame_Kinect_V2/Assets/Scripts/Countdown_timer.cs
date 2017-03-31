@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class Countdown_timer : MonoBehaviour {
 
-    float timeLeft = 5.0f;
-
+    float timeLeft = 90.0f;
     float startTime = 5.0f;
 
     public Text countdownTimerText;
@@ -53,13 +52,34 @@ public class Countdown_timer : MonoBehaviour {
         }
         else
         {
+
+            // Fight state
             startTimerText.text = "";
             timeLeft -= Time.deltaTime;
             countdownTimerText.text = Mathf.Round(timeLeft).ToString();
             p1.enabled = true;
             p2.enabled = true;
-        }
 
+            // Win State 
+            if (hm.hasRedLost)
+            { 
+                km.isGameOver = true;
+                startTimerText.text = "Blue Wins";
+                startTimerText.color = Color.blue;
+                countdownTimerText.text = "";
+            }
+
+            if (hm.hasBlueLost)
+            {
+                km.isGameOver = true;
+                startTimerText.text = "Red Wins";
+                startTimerText.color = Color.red;
+                countdownTimerText.text = "";
+            }
+
+        }// End else
+
+        // If game is draw
         if (Mathf.Round(timeLeft) <= 0)
         {
             startTimerText.text = "Draw";

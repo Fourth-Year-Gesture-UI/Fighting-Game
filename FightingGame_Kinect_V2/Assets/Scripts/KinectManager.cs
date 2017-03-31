@@ -46,10 +46,8 @@ public class KinectManager : MonoBehaviour {
     Player_2 p2;
     HealthManager hm;
 
-    // Initialization
-    void Start()
+    private void Awake()
     {
-
         // Get the sensor
         this._Sensor = KinectSensor.GetDefault();
 
@@ -87,8 +85,13 @@ public class KinectManager : MonoBehaviour {
 
         isPlayer1 = false;
         isPlayer2 = false;
+    }
 
-     }// End Start
+    // Initialization
+    void Start()
+    {
+        
+    }// End Start
 
     // Update is called once per frame
     void Update()
@@ -137,14 +140,14 @@ public class KinectManager : MonoBehaviour {
                         {
 
                             // Enable player to use gesture to go back to main menu
-                            if (body.HandRightState == HandState.Closed)
+                            if (body.HandRightState == HandState.Lasso)
                             {
+                                OnApplicationQuit();
                                 SceneManager.LoadScene("MainMenu");
                             }
 
                         }// End game over if
                        
-
                         // Adding bodies to the list
                         if (trackedBodies.Count < 2) // if list is empty
                         {

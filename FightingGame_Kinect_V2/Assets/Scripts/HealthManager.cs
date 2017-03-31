@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    private const int maxHealth = 30;
+    // Health bar variables
+    public Rect HealthBarDimens;
+    public bool VerticleHealthBar;
+    public Texture HealthBubbleTexture;
+    public Texture HealthTexture;
+    public float HealthBubbleTextureRotation;
+    HealthSystem health_bar;
+
+    private const int maxHealth = 100;
 
     // Variables for health and attack damage
     public int blueHealth { get; set; }
@@ -52,6 +60,8 @@ public class HealthManager : MonoBehaviour {
 
         km = GameObject.FindGameObjectWithTag("Kinect").GetComponent<KinectManager>();
 
+        health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
+
     }// End Start
 	
 	// Update is called once per frame
@@ -63,6 +73,8 @@ public class HealthManager : MonoBehaviour {
         {
             hasRedLost = true;
             km.isGameOver = true;
+            redHealth = 0;
+            health_bar.Update();
         }
 
         // If Red Health goes above a certain value blue loses
@@ -71,6 +83,8 @@ public class HealthManager : MonoBehaviour {
         {
             hasBlueLost = true;
             km.isGameOver = true;
+            blueHealth = 0;
+            health_bar.Update();
         }
 
     }// End Update
