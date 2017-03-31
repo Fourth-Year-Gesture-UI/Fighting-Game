@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Countdown_timer : MonoBehaviour {
 
+    // Times
     float timeLeft = 90.0f;
     float startTime = 5.0f;
 
+    // Text
     public Text countdownTimerText;
     public Text startTimerText;
 
+    // Scripts
     private Player_1 p1;
     private Player_2 p2;
     private HealthManager hm;

@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Windows.Kinect;
 
 //  ======================================================================================
-//                                  Player 1 is Red Guy
+//                                  Player 2 is Red Guy
 //  ======================================================================================
 
 public class Player_2 : MonoBehaviour {
@@ -32,15 +30,15 @@ public class Player_2 : MonoBehaviour {
     float _hitTimer = 0;
     bool canHit = true;
 
-    private void Awake()
+    // Initialisation
+    void Awake()
     {
         source = GetComponent<UnityEngine.AudioSource>();
     }
 
-    // Initialization
+    // Initialisation
     void Start()
     {
-
         animator = GetComponent<Animator>();
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
         health_bar = new HealthSystem(HealthBarDimens, VerticleHealthBar, HealthBubbleTexture, HealthTexture, HealthBubbleTextureRotation);
@@ -166,6 +164,9 @@ public class Player_2 : MonoBehaviour {
         hm.hasWinGesture = true;
     }
 
+    // ========================
+    //       Coroutines
+    // ========================
     IEnumerator BlockCoroutine()
     {
         yield return new WaitForSeconds(1f);
@@ -178,4 +179,5 @@ public class Player_2 : MonoBehaviour {
         yield return new WaitForSeconds(0.925f); 
         animator.enabled = false;
     }
+
 }// End class Player_2

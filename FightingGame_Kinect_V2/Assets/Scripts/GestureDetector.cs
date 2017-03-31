@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Windows.Kinect;
 using Microsoft.Kinect.VisualGestureBuilder;
@@ -16,14 +15,7 @@ public class GestureEventArgs : EventArgs
     //my modification
     public string GestureID { get; private set; }
 
-    //public GestureEventArgs(bool isBodyTrackingIdValid, bool isGestureDetected, float detectionConfidence)
-    //{
-    //    this.IsBodyTrackingIdValid = isBodyTrackingIdValid;
-    //    this.IsGestureDetected = isGestureDetected;
-    //    this.DetectionConfidence = detectionConfidence;
-    //}
-
-    //my mod
+    // A mod
     public GestureEventArgs(bool isBodyTrackingIdValid, bool isGestureDetected, float detectionConfidence, string gestureID)
     {
         this.IsBodyTrackingIdValid = isBodyTrackingIdValid;
@@ -46,8 +38,6 @@ public class GestureDetector : IDisposable
     private readonly string left_kickDB = "GestureDB\\Left_Kick.gbd";
     private readonly string right_kickDB = "GestureDB\\Right_Kick.gbd";
     private readonly string winDB = "GestureDB\\Win.gbd";
-
-
 
     /// <summary> Name of the discrete gesture in the database that we want to track </summary>
    // private readonly string leanLeftGestureName = "Lean_Left";
@@ -93,22 +83,6 @@ public class GestureDetector : IDisposable
             this.vgbFrameReader.IsPaused = true;
             this.vgbFrameReader.FrameArrived += this.Reader_GestureFrameArrived;
         }
-
-        //// load the 'Seated' gesture from the gesture database
-        //var databasePath = Path.Combine(Application.streamingAssetsPath, this.gestureDatabase);
-        //using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePath))
-        //{
-        //    // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
-        //    // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
-        //    foreach (Gesture gesture in database.AvailableGestures)
-        //    {
-        //        if (gesture.Name.Equals(this.seatedGestureName))
-        //        {
-        //            this.vgbFrameSource.AddGesture(gesture);
-        //        }
-        //    }
-        //}
-
 
         // load the 'Seated' gesture from the gesture database
         var databasePath = Path.Combine(Application.streamingAssetsPath, this.straight_punchDB);
@@ -404,5 +378,6 @@ public class GestureDetector : IDisposable
             this.OnGestureDetected(this, new GestureEventArgs(false, false, 0.0f, "none"));
         }
     }
-}
+
+}// End GestureDetector
 

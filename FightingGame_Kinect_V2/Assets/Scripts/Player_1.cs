@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using Windows.Kinect;
 
 //  ======================================================================================
 //                                  Player 1 is Blue Guy
@@ -33,15 +30,15 @@ public class Player_1 : MonoBehaviour {
     float _hitTimer = 0;
     bool canHit = true;
 
-    private void Awake()
+    // Initialisation
+    void Awake()
     {
         source = GetComponent<UnityEngine.AudioSource>();
     }
 
-    // Use this for initialization
+    // Initialisation
     void Start()
     {
-
         animator = GetComponent<Animator>();
         p2 = GameObject.FindGameObjectWithTag("Player-2").GetComponent<Player_2>();
         hm = GameObject.FindGameObjectWithTag("Health").GetComponent<HealthManager>();
@@ -171,6 +168,9 @@ public class Player_1 : MonoBehaviour {
         hm.hasWinGesture = true;
     }
 
+    // ========================
+    //       Coroutines
+    // ========================
     IEnumerator BlockCoroutine()
     {
         yield return new WaitForSeconds(1f);
@@ -183,4 +183,5 @@ public class Player_1 : MonoBehaviour {
         yield return new WaitForSeconds(0.925f); 
         animator.enabled = false;
     }
+
 }// End class Player_1

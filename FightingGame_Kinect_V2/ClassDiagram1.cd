@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ExampleGUIAspectsController" Collapsed="true">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAakIQAAoCSECCAAEAAkAABAAAEIAQgBAACAEAAAAAQ=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\ExampleGUIAspectsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExperienceSystem" Collapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAQAAAAAAQAAAAEAAEAAAAEAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\ExperienceSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlobeBarSystem" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\GlobeBarSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIController" Collapsed="true">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAICQECCAAEAAAAABAAAAAAQABAACAAAAAAAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\GUIController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthSystem" Collapsed="true">
+    <Position X="2.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAQAAAAAAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\HealthSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ManaSystem" Collapsed="true">
+    <Position X="6.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAQAAAAAAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\ManaSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScrollBarEssentials" Collapsed="true">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAgQAAAAEBQIIAAAAAEAAAAAMAAAgAQEAQAQAQAA=</HashCode>
+      <FileName>Assets\GameBarCreationSystem\Scripts\ScrollBarEssentials.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Countdown_timer" Collapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAADAAAAAAgCAAAAAEAAAIAgAQAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Countdown_timer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FrameCounter" Collapsed="true">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\FrameCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestureEventArgs" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAQAAAAAAIAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GestureDetector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GestureDetector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIFAMACAAQAAACAAAgAAAAAABIIEEABAgAQAAFAA=</HashCode>
+      <FileName>Assets\Scripts\GestureDetector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.704" Collapsed="true" />
+  </Class>
+  <Class Name="HealthManager" Collapsed="true">
+    <Position X="6.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAQIBCQMjAEAECAAAABAAAAAAwAABAAAIAAwAAE=</HashCode>
+      <FileName>Assets\Scripts\HealthManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KinectManager" Collapsed="true">
+    <Position X="8" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEADAIAAAISASABCAAAACAAAMBEAAEgBAAEAAIFEA=</HashCode>
+      <FileName>Assets\Scripts\KinectManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Menu" Collapsed="true">
+    <Position X="2.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEABAAAAAAAAaAAAAAAABAAAMAEAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player_1" Collapsed="true">
+    <Position X="4.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAwAAAAAACQEaAoAEEACAABABAEBAQAIABCAAAAABkA=</HashCode>
+      <FileName>Assets\Scripts\Player_1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player_2" Collapsed="true">
+    <Position X="6.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAwAAAAAACQEaAoAEEACAABABAABAQAIgBCAAAAABkA=</HashCode>
+      <FileName>Assets\Scripts\Player_2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

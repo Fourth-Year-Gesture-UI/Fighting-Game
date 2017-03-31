@@ -1,22 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Windows.Kinect;
 using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour {
 
+    // Kinect
     public KinectSensor _Sensor;
     private ColorFrameReader colorFrameReader;
     private BodyFrameReader bodyFrameReader;
-    private int bodyCount;
     private Body[] bodies;
     private List<Body> trackedBodies;
+
+    private int bodyCount;
 
     // Sound Variables
     private UnityEngine.AudioSource source;
     public AudioClip menuBeep;
 
+    // Initialisation
     private void Awake()
     {
         source = GetComponent<UnityEngine.AudioSource>();
@@ -31,11 +33,6 @@ public class Menu : MonoBehaviour {
 
         // Open the sensor
         this._Sensor.Open();
-    }
-
-    // Use this for initialization
-    void Start () {
-        
     }
 	
 	// Update is called once per frame
@@ -116,4 +113,5 @@ public class Menu : MonoBehaviour {
         }
 
     }// End OnApplicationQuit
-}
+
+}// End Menu

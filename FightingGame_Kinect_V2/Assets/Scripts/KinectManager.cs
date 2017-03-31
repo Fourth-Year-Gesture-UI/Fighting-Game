@@ -9,15 +9,23 @@ public class KinectManager : MonoBehaviour {
     // Kinect 
     public KinectSensor _Sensor;
 
+    // Scripts
+    Player_1 p1;
+    Player_2 p2;
+    HealthManager hm;
+
     // color frame and data 
     private ColorFrameReader colorFrameReader;
     private byte[] colorData;
     private Texture2D colorTexture;
 
+    // Body variables
     private BodyFrameReader bodyFrameReader;
     private int bodyCount;
     private Body[] bodies;
     private List<Body> trackedBodies;
+
+    // Gesture variables
     private string straightPunch = "Right_Straight_Punch_Right";
     private string left_punch = "Left_Punch_Left";
     private string block = "Block";
@@ -28,25 +36,14 @@ public class KinectManager : MonoBehaviour {
     /// <summary> List of gesture detectors, there will be one detector created for each potential body (max of 6) </summary>
     private List<GestureDetector> gestureDetectorList = null;
 
-    private float rightPunch;
+    // Tracking bodies
     private int count;
+    private int bi;
 
-    // Used to assign trackind id's so that two players can be differentiated while in game
-    private ulong player_1;
-    private ulong player_2;
-
-    private bool isPlayer1;
-    private bool isPlayer2;
-
+    // Game over get/set
     public bool isGameOver { get; set; }
 
-    private int bi;
-   
-    // Player scripts
-    Player_1 p1;
-    Player_2 p2;
-    HealthManager hm;
-
+    // Initialise variables
     private void Awake()
     {
         // Get the sensor
@@ -84,15 +81,7 @@ public class KinectManager : MonoBehaviour {
 
         }// End if
 
-        isPlayer1 = false;
-        isPlayer2 = false;
-    }
-
-    // Initialization
-    void Start()
-    {
-        
-    }// End Start
+    }// End Awake
 
     // Update is called once per frame
     void Update()
@@ -185,12 +174,7 @@ public class KinectManager : MonoBehaviour {
                     // if the current body TrackingId changed, update the corresponding gesture detector with the new value
                     if (trackingId != this.gestureDetectorList[bodyIndex].TrackingId)
                     {
-                        //GestureTextGameObject.text = "none";
-                        //this.bodyText[bodyIndex] = "none";
                         this.gestureDetectorList[bodyIndex].TrackingId = trackingId;
-
-                       // player_1 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_1);
-                        //player_2 = checkTrackingId(this.gestureDetectorList[bodyIndex].TrackingId, player_2);
 
                         // if the current body is tracked, unpause its detector to get VisualGestureBuilderFrameArrived events
                         // if the current body is not tracked, pause its detector so we don't waste resources trying to get invalid gesture results
@@ -199,9 +183,12 @@ public class KinectManager : MonoBehaviour {
                         this.gestureDetectorList[bodyIndex].OnGestureDetected += CreateOnGestureHandler(trackedBodies, trackingId);
                        
                     }
+
                 }
+
             }
-        }
+
+        }// End outer most if
 
     }// End Update
 
@@ -212,10 +199,8 @@ public class KinectManager : MonoBehaviour {
 
     private void OnGestureDetected(object sender, GestureEventArgs e, List<Body> players, ulong trackingId)
     {
-        
-        var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
 
-        // Right Punch
+        // Right Punch Gesture
         if (e.GestureID == straightPunch)
         {
 
@@ -454,27 +439,7 @@ public class KinectManager : MonoBehaviour {
 
     }// End OnGestureDetected
 
-    private void OnRightLeanGestureDetected(object sender, GestureEventArgs e, int bodyIndex)
-    {
-        var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
-
-        //NEW UI FOR GESTURE DETECTed
-        //GestureTextGameObject.text = "Gesture Detected: " + isDetected;
-        //StringBuilder text = new StringBuilder(string.Format("Gesture Detected? {0}\n", isDetected));
-        //ConfidenceTextGameObject.text = "Confidence: " + e.DetectionConfidence;
-        //text.Append(string.Format("Confidence: {0}\n", e.DetectionConfidence));
-        if (e.DetectionConfidence > 0.65f)
-        {
-           // turnScript.turnRight = true;
-        }
-        else
-        {
-           // turnScript.turnRight = false;
-        }
-
-        //this.bodyText[bodyIndex] = text.ToString();
-    }
-
+    // Close kinect sensor
     void OnApplicationQuit()
     {
         if (this.colorFrameReader != null)
