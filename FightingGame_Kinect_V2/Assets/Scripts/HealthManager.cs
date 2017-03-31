@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    private const int maxHealth = 20;
+    private const int maxHealth = 100;
 
     // Variables for health and attack damage
     public int blueHealth { get; set; }
