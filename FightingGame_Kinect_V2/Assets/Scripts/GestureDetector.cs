@@ -45,6 +45,8 @@ public class GestureDetector : IDisposable
     private readonly string blockDB = "GestureDB\\Block.gbd";
     private readonly string left_kickDB = "GestureDB\\Left_Kick.gbd";
     private readonly string right_kickDB = "GestureDB\\Right_Kick.gbd";
+    private readonly string winDB = "GestureDB\\Win.gbd";
+
 
 
     /// <summary> Name of the discrete gesture in the database that we want to track </summary>
@@ -59,6 +61,7 @@ public class GestureDetector : IDisposable
     private readonly string block = "Block";
     private readonly string left_kick = "Left_Kick_Left";
     private readonly string right_kick = "Right_Kick_Right";
+    private readonly string win = "Win";
 
     /// <summary> Gesture frame source which should be tied to a body tracking ID </summary>
     private VisualGestureBuilderFrameSource vgbFrameSource = null;
@@ -113,6 +116,7 @@ public class GestureDetector : IDisposable
         var databasePathBlock = Path.Combine(Application.streamingAssetsPath, this.blockDB);
         var databasePathLeftKick = Path.Combine(Application.streamingAssetsPath, this.left_kickDB);
         var databasePathRightKick = Path.Combine(Application.streamingAssetsPath, this.right_kickDB);
+        var databasePathWin = Path.Combine(Application.streamingAssetsPath, this.winDB);
 
         using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePath))
         {
@@ -177,6 +181,20 @@ public class GestureDetector : IDisposable
             {
 
                 if (gesture.Name.Equals(this.right_kick))
+                {
+                    this.vgbFrameSource.AddGesture(gesture);
+                }
+            }
+        }
+
+        using (VisualGestureBuilderDatabase database = VisualGestureBuilderDatabase.Create(databasePathWin))
+        {
+            // we could load all available gestures in the database with a call to vgbFrameSource.AddGestures(database.AvailableGestures), 
+            // but for this program, we only want to track one discrete gesture from the database, so we'll load it by name
+            foreach (Gesture gesture in database.AvailableGestures)
+            {
+
+                if (gesture.Name.Equals(this.win))
                 {
                     this.vgbFrameSource.AddGesture(gesture);
                 }
@@ -350,6 +368,21 @@ public class GestureDetector : IDisposable
                                 if (this.OnGestureDetected != null)
                                 {
                                     this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.left_kick));
+                                }
+                            }
+                        }
+
+                        // Win Gesture
+                        if (gesture.Name.Equals(this.win) && gesture.GestureType == GestureType.Discrete)
+                        {
+                            DiscreteGestureResult result = null;
+                            discreteResults.TryGetValue(gesture, out result);
+
+                            if (result != null)
+                            {
+                                if (this.OnGestureDetected != null)
+                                {
+                                    this.OnGestureDetected(this, new GestureEventArgs(true, result.Detected, result.Confidence, this.win));
                                 }
                             }
                         }

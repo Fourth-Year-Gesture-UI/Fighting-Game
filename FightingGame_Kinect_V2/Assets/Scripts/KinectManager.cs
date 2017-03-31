@@ -23,6 +23,7 @@ public class KinectManager : MonoBehaviour {
     private string block = "Block";
     private string left_kick = "Left_Kick_Left";
     private string right_kick = "Right_Kick_Right";
+    private string win = "Win";
 
     /// <summary> List of gesture detectors, there will be one detector created for each potential body (max of 6) </summary>
     private List<GestureDetector> gestureDetectorList = null;
@@ -96,7 +97,6 @@ public class KinectManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
         // process bodies
         bool newBodyData = false;
 
@@ -229,15 +229,24 @@ public class KinectManager : MonoBehaviour {
                     {
                         if (i == 0)
                         {
-                            p1.straight_right_punch();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.rightPunch;
+
+                            if (hm.hasRedLost == false)
+                            {
+                                p1.straight_right_punch();
+                                hm.isBlueAttacking = true;
+                                hm.damage = hm.rightPunch;
+                            }
+                           
                         }
                         else
                         {
-                            p2.straight_right_punch();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.rightPunch;
+                            if (hm.hasBlueLost == false)
+                            {
+                                p2.straight_right_punch();
+                                hm.isRedAttacking = true;
+                                hm.damage = hm.rightPunch;
+                            }
+                           
                         }// End if /else
 
                     }// End if
@@ -247,8 +256,6 @@ public class KinectManager : MonoBehaviour {
             }// End if
 
         }// End outer if
-
-       // Debug.Log(e.GestureID);
 
         // Left Punch Gesture
         if (e.GestureID == left_punch)
@@ -265,15 +272,23 @@ public class KinectManager : MonoBehaviour {
                     {
                         if (i == 0)
                         {
-                            p1.straight_left_punch();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.leftPunch;
+
+                            if (hm.hasRedLost == false)
+                            {
+                                p1.straight_left_punch();
+                                hm.isBlueAttacking = true;
+                                hm.damage = hm.leftPunch;
+                            }   
                         }
                         else
                         {
-                            p2.straight_left_punch();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.leftPunch;
+                            if (hm.hasBlueLost == false)
+                            {
+                                p2.straight_left_punch();
+                                hm.isRedAttacking = true;
+                                hm.damage = hm.leftPunch;
+                            }
+                           
                         }// End if / else
 
                     }//End if
@@ -331,15 +346,23 @@ public class KinectManager : MonoBehaviour {
                     {
                         if (i == 0)
                         {
-                            p1.left_kick();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.leftKick;
+                            if (hm.hasRedLost == false)
+                            {
+                                p1.left_kick();
+                                hm.isBlueAttacking = true;
+                                hm.damage = hm.leftKick;
+                            }
+                               
                         }
                         else
                         {
-                            p2.left_kick();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.leftKick;
+                            if (hm.hasBlueLost == false)
+                            {
+                                p2.left_kick();
+                                hm.isRedAttacking = true;
+                                hm.damage = hm.leftKick;
+                            }
+                                
                         }// End if / else
 
                     }//End if
@@ -365,18 +388,63 @@ public class KinectManager : MonoBehaviour {
                     {
                         if (i == 0)
                         {
-                            p1.right_kick();
-                            hm.isBlueAttacking = true;
-                            hm.damage = hm.rightKick;
+                            if (hm.hasRedLost == false)
+                            {
+                                p1.right_kick();
+                                hm.isBlueAttacking = true;
+                                hm.damage = hm.rightKick;
+                            }
+                                
                         }
                         else
                         {
-                            p2.right_kick();
-                            hm.isRedAttacking = true;
-                            hm.damage = hm.rightKick;
+                            if (hm.hasBlueLost == true)
+                            {
+                                p2.right_kick();
+                                hm.isRedAttacking = true;
+                                hm.damage = hm.rightKick;
+                            }
+                           
                         }// End if / else
 
                     }//End if
+
+                }// End for
+
+            }// End if
+
+        }// End outer if
+
+        // Win
+        if (e.GestureID == win)
+        {
+
+            if (e.DetectionConfidence > 0.7)
+            {
+
+                for (int i = 0; i < players.Count; i++)
+                {
+                    Body b = players[i];
+                    if (b.TrackingId == trackingId)
+                    {
+                        if (i == 0)
+                        {
+                            if (hm.hasRedLost == true)
+                            {
+                                p1.win();
+                            }
+                                
+                        }
+                        else
+                        {
+                            if (hm.hasBlueLost == true)
+                            {
+                                p2.win();
+                            }
+           
+                        }// End if /else
+
+                    }// End if
 
                 }// End for
 

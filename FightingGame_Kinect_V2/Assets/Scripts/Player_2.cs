@@ -160,6 +160,11 @@ public class Player_2 : MonoBehaviour {
         animator.Play("TakenHit");
     }
 
+    public void win()
+    {
+        animator.Play("Win");
+    }
+
     IEnumerator BlockCoroutine()
     {
         yield return new WaitForSeconds(1f);
