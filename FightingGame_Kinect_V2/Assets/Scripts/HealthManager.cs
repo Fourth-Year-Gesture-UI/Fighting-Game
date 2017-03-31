@@ -34,6 +34,8 @@ public class HealthManager : MonoBehaviour {
     public bool hasRedLost { get; set; }
     public bool hasBlueLost { get; set; }
 
+    public bool hasWinGesture { get; set; }
+
     private KinectManager km;
 
     // Use this for initialization
@@ -44,10 +46,10 @@ public class HealthManager : MonoBehaviour {
         redHealth = 0;
 
         // Attack damage
-        leftPunch = -5;
-        rightPunch = -10;
-        leftKick = -5;
-        rightKick = -5;
+        leftPunch = -7;
+        rightPunch = -5;
+        leftKick = -12;
+        rightKick = -3;
 
         isBlueAttacking = false;
         isRedAttacking = false;
@@ -57,6 +59,8 @@ public class HealthManager : MonoBehaviour {
 
         hasRedLost = false;
         hasBlueLost = false;
+
+        hasWinGesture = false;
 
         km = GameObject.FindGameObjectWithTag("Kinect").GetComponent<KinectManager>();
 

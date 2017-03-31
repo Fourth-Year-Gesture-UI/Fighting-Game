@@ -140,7 +140,7 @@ public class KinectManager : MonoBehaviour {
                         {
 
                             // Enable player to use gesture to go back to main menu
-                            if (body.HandRightState == HandState.Lasso)
+                            if (body.HandRightState == HandState.Lasso && hm.hasWinGesture == true)
                             {
                                 OnApplicationQuit();
                                 SceneManager.LoadScene("MainMenu");
@@ -415,11 +415,11 @@ public class KinectManager : MonoBehaviour {
 
         }// End outer if
 
-        // Win
+        // Win Gesture
         if (e.GestureID == win)
         {
 
-            if (e.DetectionConfidence > 0.7)
+            if (e.DetectionConfidence > 0.4)
             {
 
                 for (int i = 0; i < players.Count; i++)

@@ -163,6 +163,7 @@ public class Player_2 : MonoBehaviour {
     public void win()
     {
         animator.Play("Win");
+        hm.hasWinGesture = true;
     }
 
     IEnumerator BlockCoroutine()
