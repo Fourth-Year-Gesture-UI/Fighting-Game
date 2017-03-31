@@ -152,39 +152,7 @@ public class KinectManager : MonoBehaviour {
                         bodiesTracked++;
 
                         // Adding bodies to the list
-                        if (trackedBodies.Count < 2) // if list is not populated
-                        {
-                            // if no players in the list:
-                            if(trackedBodies.Count == 0)
-                            {
-                                // Create first Player object
-                                Player p = new Player(1, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
-                                // then add player 1
-                                trackedBodies.Add(p);
-                            }
-                            // if there player 1 in the list:
-                            if(trackedBodies.Count == 1)
-                            {
-                                // make sure that it is not player 1
-                                if(trackedBodies[0].TrackingId != bodies[bodyIndex].TrackingId)
-                                {
-                                    if(trackedBodies[0].playerNumber == 1)
-                                    {
-                                        // Create second Player object
-                                        // and add player 2 to the list
-                                        Player p = new Player(2, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
-                                        trackedBodies.Add(p);
-                                    }
-                                    else
-                                    {
-                                        // Create second Player object
-                                        // and add player 2 to the list
-                                        Player p = new Player(1, bodies[bodyIndex], bodies[bodyIndex].TrackingId);
-                                        trackedBodies.Insert(0, p);
-                                    }
-                                }
-                            }
-                        }
+                        addPlayer(trackedBodies, bodies[bodyIndex]);
 
                         // Assign tracking id 
                         trackingId = body.TrackingId;
@@ -216,16 +184,8 @@ public class KinectManager : MonoBehaviour {
                 // remove player if step out
                 if(bodyIndex == this.bodyCount - 1)
                 {
-                    if(bodiesTracked == 1 && trackedBodies.Count == 2)
-                    {
-                        foreach(Player p in trackedBodies)
-                        {
-                            if(p.trackingId != trackingId)
-                            {
-                                trackedBodies.Remove(p);
-                            }
-                        }
-                    }
+                    // remove players if they steped out
+                    removePlayer(bodiesTracked, trackedBodies, trackingId);
                 }
 
 
@@ -245,7 +205,7 @@ public class KinectManager : MonoBehaviour {
         var isDetected = e.IsBodyTrackingIdValid && e.IsGestureDetected;
 
         // Right Punch
-        if (e.GestureID == straightPunch)
+        if (e.GestureID == strackedBodiestraightPunch)
         {
 
             if (e.DetectionConfidence > 0.5)
@@ -255,10 +215,18 @@ public class KinectManager : MonoBehaviour {
                 {
                     if (players[0].trackingId == trackingId)
                     {
-                        
-                        p1.straight_right_punch();
-                        hm.isBlueAttacking = true;
-                        hm.damage = hm.rightPunch;
+                        if(players[0].playerControl == 'b')
+                        {
+                            p1.straight_right_punch();
+                            hm.isBlueAttacking = true;
+                            hm.damage = hm.rightPunch;
+                        }
+                        else
+                        {
+                            p2.straight_right_punch();
+                            hm.isRedAttacking = true;
+                            hm.damage = hm.rightPunch;
+                        }
                     }
                     else
                     {
@@ -451,9 +419,73 @@ public class KinectManager : MonoBehaviour {
         return this._Sensor;
     }
 
-    private void removePlayer()
+    private void removePlayer(int bt, List<Player> tb, ulong tId)
     {
+        // if one player steped out
+        if(bt == 1 && tb.Count == 2)
+        {
+            foreach(Player p in tb)
+            {
+                if(p.trackingId != tId)
+                {
+                    tb.Remove(p);
+                }
+            }
+        }
+        else if(bt == 0)
+        {
+            tb.Clear();
+        }
+    }
 
+    private void addPlayer(List<Player> tb, Body b)
+    {
+        // Adding bodies to the list
+        if (tb.Count < 2) // if list is not populated
+        {
+            // if no players in the list:
+            if(tb.Count == 0)
+            {
+                // Create first Player object
+                Player p = new Player(1, b, b.TrackingId);
+                p.playerControl = 'b';
+                // then add player 1
+                tb.Add(p);
+            }
+            // if there player 1 in the list:
+            if(tb.Count == 1)
+            {
+                // make sure that it is not existing player
+                if(tb[0].TrackingId != b.TrackingId)
+                {
+                    if(tb[0].playerNumber == 1)
+                    {
+                        // Create second Player object
+                        // and add player 2 to the list
+                        Player p = new Player(2, b, b.TrackingId);
+                        p.playerControl = 'r';
+                        tb.Add(p);
+                    }
+                    else
+                    {
+                        // Create second Player object
+                        // and add player 2 to the list
+                        Player p = new Player(1, b, b.TrackingId);
+                        p.playerControl = 'b';
+                        tb.Insert(0, p);
+                    }
+                }
+            }
+        }
+    }
+
+    private void swapPlayers(List<Player> players)
+    {
+        if(players.Count == 2)
+        {
+            players[0].playerNumber = 2;
+            players[0].playerControl = 'r';
+        }
     }
 
     // bodies = new Body[this.kinectSensor.BodyFrameSource.BodyCount];
