@@ -1,2 +1,1 @@
-# Fighting-Game
-This is a fighting game created in Unity that uses Kinect and gesture controls 
+For full documentation, please reger to the pdf 
