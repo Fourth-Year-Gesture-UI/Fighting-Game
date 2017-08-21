@@ -1,1 +1,3 @@
-For full documentation, please reger to the pdf 
+### Documetation
+
+For full documentation, please refer to the pdf 
